@@ -2,6 +2,7 @@ package main
 
 import (
 	"XU4PowerManager/internal"
+	"XU4PowerManager/pkg/Server"
 	"fmt"
 	_ "github.com/spf13/viper"
 	"io/ioutil"
@@ -16,9 +17,9 @@ func check(e error) {
 
 func main() {
 	fmt.Println("Starting XU4 Power Manager ver." + internal.Ver)
+	fmt.Println("Server " + Server.Status)
 
-	content, _ := ioutil.ReadFile(internal.Thermal0)
-	fmt.Println(string(content))
+	Server.Start()
 
 	for true {
 
