@@ -7,5 +7,5 @@ import (
 )
 
 func main() {
-	fmt.Println("hello world 5 " + internal.Ver)
+	fmt.Println("hello world 6 " + internal.Ver)
 }
