@@ -5,7 +5,6 @@ import (
 	"fmt"
 	_ "github.com/spf13/viper"
 	"io/ioutil"
-	"log"
 	"time"
 )
 
@@ -18,15 +17,13 @@ func check(e error) {
 func main() {
 	fmt.Println("Starting XU4 Power Manager ver." + internal.Ver)
 
-	content, err := ioutil.ReadFile(internal.Thermal0)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
+	content, _ := ioutil.ReadFile(internal.Thermal0)
 	fmt.Println(string(content))
 
 	for true {
+
+		content, _ := ioutil.ReadFile(internal.Thermal0)
+		fmt.Println(string(content))
 
 		fmt.Println("Update")
 		time.Sleep(internal.UpdateTime)
