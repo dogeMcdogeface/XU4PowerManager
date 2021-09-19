@@ -2,27 +2,31 @@ package main
 
 import (
 	"XU4PowerManager/internal"
-	"bufio"
 	"fmt"
 	_ "github.com/spf13/viper"
+	"io/ioutil"
 	"log"
-	"os"
 	"time"
 )
+
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
+}
 
 func main() {
 	fmt.Println("Starting XU4 Power Manager ver." + internal.Ver)
 
+	content, err := ioutil.ReadFile(internal.Thermal0)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(string(content))
+
 	for true {
-		file, err := os.Open(internal.Thermal0)
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer file.Close()
-
-		scanner := bufio.NewScanner(file)
-
-		fmt.Println(scanner.Text())
 
 		fmt.Println("Update")
 		time.Sleep(internal.UpdateTime)
