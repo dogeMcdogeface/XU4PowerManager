@@ -3,7 +3,7 @@ package main
 import (
 	"XU4PowerManager/internal"
 	"fmt"
-	"github.com/spf13/viper"
+	_ "github.com/spf13/viper"
 )
 
 func main() {
