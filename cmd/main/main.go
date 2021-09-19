@@ -25,6 +25,7 @@ func main() {
 
 		content, _ := ioutil.ReadFile(internal.Thermal0)
 		fmt.Println(string(content))
+		Server.Temp = string(content)
 
 		fmt.Println("Update")
 		time.Sleep(internal.UpdateTime)
