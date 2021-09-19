@@ -9,17 +9,17 @@ import (
 	"time"
 )
 
-func check(e error) {
+/*func check(e error) {
 	if e != nil {
 		panic(e)
 	}
-}
+}*/
 
 func main() {
 	fmt.Println("Starting XU4 Power Manager ver." + internal.Ver)
 	fmt.Println("Server " + Server.Status)
 
-	Server.Start()
+	go Server.Start()
 
 	for true {
 
