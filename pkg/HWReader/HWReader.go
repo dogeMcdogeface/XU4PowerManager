@@ -18,7 +18,7 @@ var Sensors = map[string]string{
 }
 
 var LastRead = map[string]interface{}{}
-var History = make([]map[string]interface{}, 1, 1)
+var History = make([]map[string]interface{}, HistoryLength)
 
 func Start() {
 	enabled = true
