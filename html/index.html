@@ -73,10 +73,10 @@
     requestLast.onload = function () {
         //console.log(requestLast.response)
         var data = requestLast.response
-        var time1 = Date.parse(data.Time)
-        var time2 = Date.parse(data.Time)
-        console.log(time2,time1)
-        time2 =time1 - 20000;
+        var time1 = new Date(data.Time)
+        var time2 = new Date(data.Time)
+        time2.setMinutes(time1.getMinutes() - 2);
+        console.log(data.Time, time2,time1)
 
 
 
@@ -87,7 +87,7 @@
             }
         };
 
-
+        //console.log(time2,time1)
 
         Plotly.relayout('myDiv', minuteView);
 
