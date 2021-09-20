@@ -50,7 +50,7 @@
             return item.Thermal0 / 1000;
         });
         var Freq0 = data.map(function (item) {
-            return item.Freq0 / 1000;
+            return item.Freq0;
         });
 
 
@@ -148,7 +148,7 @@
         }
 
         Plotly.extendTraces('myDiv', {
-            y: [[data.Thermal0 / 1000], [data.Freq0 / 1000]],
+            y: [[data.Thermal0 / 1000], [data.Freq0]],
             x: [[time1], [time1]]
 
         }, [0, 1])
