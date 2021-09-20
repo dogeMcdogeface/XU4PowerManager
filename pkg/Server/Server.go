@@ -1,13 +1,14 @@
 package Server
 
 import (
+	"XU4PowerManager/pkg/HWReader"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 )
 
 var Status = "off"
-var Temp = "0"
 
 /*var pages = map[string]int{
 	"rsc": 3711,
@@ -16,19 +17,19 @@ var Temp = "0"
 }*/
 
 func handlerDefault(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Server says " + Temp)
-	fmt.Fprintf(w, Page, Temp)
+	fmt.Fprintf(w, Page, 12)
 }
 
 func handlerLast(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Server says " + Temp)
-	fmt.Fprintf(w, "last %s", Temp)
+	jsonString, _ := json.Marshal(HWReader.LastRead)
+	fmt.Println(jsonString)
+	fmt.Fprintf(w, string(jsonString))
 	/*fmt.Fprintf(w, "Temp is  %s!", Temp)*/
 }
 
 func handlerHistory(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Server says " + Temp)
-	fmt.Fprintf(w, "history %s", Temp)
+	fmt.Println("Server says " + "12")
+	fmt.Fprintf(w, "history %s", "12")
 	/*fmt.Fprintf(w, "Temp is  %s!", Temp)*/
 }
 

@@ -16,20 +16,18 @@ var Sensors = map[string]string{
 }
 
 var LastRead = map[string]interface{}{}
+var History = []map[string]interface{}{}
 
 func Start() {
 	enabled = true
 
 	for enabled == true {
 
+		LastRead["Time"] = time.Now()
 		for key, value := range Sensors {
-			//fmt.Println("Key:", key, "Value:", value)
 			LastRead[key] = readSensor(value)
 		}
 		fmt.Println(LastRead)
-
-		/*fmt.Println(string(content))
-		Server.Temp = string(content)*/
 
 		fmt.Println("Update")
 		time.Sleep(UpdateTime)
