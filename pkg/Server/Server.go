@@ -22,13 +22,11 @@ func handlerDefault(w http.ResponseWriter, r *http.Request) {
 
 func handlerLast(w http.ResponseWriter, r *http.Request) {
 	jsonString, _ := json.Marshal(HWReader.GetLast())
-	fmt.Println(jsonString)
 	fmt.Fprintf(w, string(jsonString))
 }
 
 func handlerHistory(w http.ResponseWriter, r *http.Request) {
 	jsonString, _ := json.Marshal(HWReader.GetHistory())
-	fmt.Println(jsonString)
 	fmt.Fprintf(w, string(jsonString))
 }
 

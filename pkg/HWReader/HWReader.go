@@ -10,7 +10,7 @@ import (
 
 var enabled = false
 
-var UpdateTime = 10 * time.Millisecond
+var UpdateTime = 100 * time.Millisecond
 var HistoryDuration = 5 * time.Second
 
 var Sensors = map[string]string{
@@ -25,11 +25,13 @@ var history = make([]map[string]interface{}, HistoryLength)
 
 var lock sync.Mutex
 
+/*****************************************************************/
 func Start() {
 	enabled = true
 
 	for enabled == true {
 		lock.Lock()
+
 		lastRead["Time"] = time.Now()
 		for key, value := range Sensors {
 			lastRead[key] = readSensor(value)
@@ -53,6 +55,7 @@ func readSensor(path string) int {
 	content, _ := ioutil.ReadFile(path)
 	value, _ := strconv.Atoi(string(content))
 
+	fmt.Println(path, content, value)
 	return value
 }
 
@@ -61,7 +64,6 @@ func GetLast() map[string]interface{} {
 	defer lock.Unlock()
 	return lastRead
 }
-
 func GetHistory() []map[string]interface{} {
 	lock.Lock()
 	defer lock.Unlock()
