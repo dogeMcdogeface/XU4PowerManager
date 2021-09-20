@@ -198,6 +198,8 @@
             return item / 255.0 * 100.0
         else if (key.includes("Freq"))
             return item
+        else if (key.includes("Time"))
+            return new Date(item)
         else
             return item
     }
