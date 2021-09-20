@@ -2,7 +2,6 @@ package HWReader
 
 import (
 	"io/ioutil"
-	"math/rand"
 	"strconv"
 	"strings"
 	"sync"
@@ -49,7 +48,7 @@ func Start() {
 		lastRead = map[string]interface{}{}
 		lastRead["Time"] = time.Now()
 		for key, value := range Sensors {
-			lastRead[key] = rand.Intn(50)*1000 + readSensor(value)
+			lastRead[key] = readSensor(value)
 		}
 		history[HistoryIndex] = lastRead
 		HistoryIndex = (HistoryIndex + 1) % HistoryLength
