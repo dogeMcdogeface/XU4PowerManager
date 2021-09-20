@@ -91,7 +91,9 @@
 
 
         Plotly.newPlot('myDiv', traces,
-            {
+            {                colorway : ['#f3cec9', '#e7a4b6', '#cd7eaf', '#a262a9', '#6f4d96', '#3d3b72', '#182844'],
+
+
                 /*********** SUBPLOT 1 ***************/
                 xaxis: {
                     anchor: 'x1',
@@ -100,8 +102,10 @@
                     domain: [0, 1]
                 },
                 yaxis: {
+                    title: {text: 'Core Temperatures'},
                     anchor: 'y1',
                     type: 'number',
+                    ticksuffix: "°C",
                     range: [0, 100],
                     domain: [0.6, 1]
                 },
@@ -113,12 +117,16 @@
                      domain: [0, 1]
                  },*/
                 yaxis2: {
+                    title: {text: 'Core Frequencies'},
                     anchor: 'x2',
                     type: 'number',
+                    ticksuffix: "Ghz",
                     range: [0, 5],
                     domain: [0, 0.5]
                 }
-            }, {responsive: true}
+            }, {
+                responsive: true
+            }
         );
 
 
