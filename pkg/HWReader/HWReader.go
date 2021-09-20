@@ -39,9 +39,8 @@ func Start() {
 		history[HistoryIndex] = lastRead
 		HistoryIndex = (HistoryIndex + 1) % HistoryLength
 
-		fmt.Println(lastRead)
+		//fmt.Println(lastRead)
 
-		fmt.Println("Update")
 		lock.Unlock()
 		time.Sleep(UpdateTime)
 	}
@@ -55,7 +54,7 @@ func readSensor(path string) int {
 	content, _ := ioutil.ReadFile(path)
 	value, _ := strconv.Atoi(string(content))
 
-	fmt.Println(path, content, value)
+	fmt.Println(path, string(content), value)
 	return value
 }
 
