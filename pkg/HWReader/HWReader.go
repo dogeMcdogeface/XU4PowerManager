@@ -8,15 +8,16 @@ import (
 )
 
 var enabled = false
-var UpdateFrequency = 10.
-var UpdateTime = time.Second / time.Duration(UpdateFrequency)
-var HistoryLength = int((5 * time.Second) / UpdateTime)
-var HistoryIndex = 0
+
+var UpdateTime = 10 * time.Millisecond
+var HistoryDuration = 5 * time.Second
 
 var Sensors = map[string]string{
 	"Thermal0": "/sys/devices/virtual/thermal/thermal_zone0/temp",
 }
 
+var HistoryLength = int((5 * time.Second) / UpdateTime)
+var HistoryIndex = 0
 var LastRead = map[string]interface{}{}
 var History = make([]map[string]interface{}, HistoryLength)
 
