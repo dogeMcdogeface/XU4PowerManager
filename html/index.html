@@ -21,14 +21,14 @@
         /************** CREATE PLOT **********************/
         data = requestHistory.response
 
-        if(data.includes(null)){
-            setTimeout(function(){ location.reload(); }, 1000);
+        if (data.includes(null)) {
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
             return;
         }
 
         data.sort((a, b) => new Date(a.Time).getTime() - new Date(b.Time).getTime());
-
-
 
 
         var timetable = data.map(function (item) {
@@ -47,27 +47,47 @@
         //console.log(Thermal0)
 
 
-
-
         Plotly.newPlot('myDiv', [{
                 y: Thermal0,
                 x: timetable,
+                xaxis: 'x1',
+                yaxis: 'y1',
                 mode: 'lines',
                 line: {color: '#80CAF6'}
             }, {
                 y: Freq0,
                 x: timetable,
+                xaxis: 'x2',
+                yaxis: 'y2',
                 mode: 'lines',
                 line: {color: '#DF56F1'}
             }],
             {
-                xaxis: {
+                /*********** SUBPLOT 1 ***************/
+                xaxis1: {
+                    anchor: 'x1',
                     type: 'date',
-                    range: [-1, -1]
+                    range: [-1, -1],
+                    domain: [0, 1]
                 },
-                yaxis: {
+                yaxis1: {
+                    anchor: 'y1',
                     type: 'number',
-                    range: [0, 100]
+                    range: [0, 100],
+                    domain: [0.6, 1]
+                },
+                /*********** SUBPLOT 2 ***************/
+                xaxis2: {
+                    anchor: 'y2',
+                    type: 'date',
+                    range: [-1, -1],
+                    domain: [0, 1]
+                },
+                yaxis2: {
+                    anchor: 'x2',
+                    type: 'number',
+                    range: [0, 10000000],
+                    domain: [0, 0.5]
                 }
             }
         );
@@ -112,10 +132,11 @@
         }
 
         Plotly.extendTraces('myDiv', {
-            y: [[data.Thermal0 / 1000], [data.Freq0 ]],
+            y: [[data.Thermal0 / 1000], [data.Freq0 / 1000]],
             x: [[time1], [time1]]
 
         }, [0, 1])
+
 
     };
 
