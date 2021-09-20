@@ -19,17 +19,17 @@
         console.log(requestHistory.response)
 
         /************** CREATE PLOT **********************/
-        history = requestHistory.response
+        data = requestHistory.response
 
-        history.sort((a, b) => new Date(a.Time).getTime() - new Date(b.Time).getTime());
-
-
+        data.sort((a, b) => new Date(a.Time).getTime() - new Date(b.Time).getTime());
 
 
-        var timetable = history.map(function (item) {
+
+
+        var timetable = data.map(function (item) {
             return new Date(item.Time);
         });
-        var Thermal0 = history.map(function (item) {
+        var Thermal0 = data.map(function (item) {
             return item.Thermal0 / 1000;
         });
 
