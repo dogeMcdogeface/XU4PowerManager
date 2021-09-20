@@ -26,7 +26,7 @@
 
 
         var timetable = data.map(function (item) {
-            return item.Time;
+            return new Date(item.Time);
         });
         var Thermal0 = data.map(function (item) {
             return item.Thermal0 / 1000;
