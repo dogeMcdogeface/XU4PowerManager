@@ -75,7 +75,7 @@
         var data = requestLast.response
         var time1 = Date.parse(data.Time)
         var time2 = Date.parse(data.Time)
-        time2.setMinutes(time1.getUTCMinutes() - 2);
+        time2.setMinutes(time1.getMinutes() - 2);
 
 
 
