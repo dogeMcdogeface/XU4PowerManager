@@ -22,7 +22,7 @@
         data = requestHistory.response
 
         if(data.includes(null)){
-            location.reload();
+            setTimeout(function(){ location.reload(); }, 1000);
             return;
         }
 
