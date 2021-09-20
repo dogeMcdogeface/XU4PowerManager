@@ -18,6 +18,8 @@
 
         /************** CREATE PLOT **********************/
         data = requestHistory.response
+        data.sort((a, b) => parseFloat(a.Time) - parseFloat(b.Time));
+
         var timetable = data.map(function(item) {
             return item.Time;
         });
