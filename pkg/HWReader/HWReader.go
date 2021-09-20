@@ -35,14 +35,13 @@ func Start() {
 	for enabled == true {
 		lock.Lock()
 
+		lastRead = map[string]interface{}{}
 		lastRead["Time"] = time.Now()
 		for key, value := range Sensors {
 			lastRead[key] = readSensor(value)
 		}
 		history[HistoryIndex] = lastRead
 		HistoryIndex = (HistoryIndex + 1) % HistoryLength
-
-		//fmt.Println(lastRead)
 
 		lock.Unlock()
 		time.Sleep(UpdateTime)
