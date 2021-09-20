@@ -8,6 +8,8 @@
 
 <script>
 
+    var autoScroll = true;
+
 
     /************** REQUEST HISTORY ******************/
     let requestHistory = new XMLHttpRequest();
@@ -64,7 +66,7 @@
             {
                 xaxis: {
                     type: 'date',
-                    range: [Date.now(), Date.now()]
+                    range: [-1, -1]
                 },
                 yaxis: {
                     type: 'number',
@@ -72,6 +74,17 @@
                 }
             }
         );
+
+
+        myDiv.on('plotly_relayout', function (eventdata) {
+            if (eventdata.custom) {
+                return;
+            }else if ( new Date(eventdata["xaxis.range[0]"]).getTime() > 0) {
+                autoScroll = false;
+            } else {
+                autoScroll = true;
+            }
+        });
 
 
     };
@@ -90,21 +103,22 @@
 
 
         var minuteView = {
+            custom: true,
             xaxis: {
                 type: 'date',
                 range: [time2, time1]
             }
         };
 
-
-        Plotly.relayout('myDiv', minuteView);
-
+        if (autoScroll) {
+            Plotly.relayout('myDiv', minuteView);
+        }
 
         Plotly.extendTraces('myDiv', {
             y: [[data.Thermal0 / 1000], [data.Thermal0 / 1000]],
             x: [[time1], [time1]]
 
-        })
+        }, [0, 1])
 
     };
 

@@ -1,7 +1,6 @@
 package HWReader
 
 import (
-	"fmt"
 	"io/ioutil"
 	"strconv"
 	"strings"
@@ -44,7 +43,7 @@ func Start() {
 		history[HistoryIndex] = lastRead
 		HistoryIndex = (HistoryIndex + 1) % HistoryLength
 
-		fmt.Println(lastRead)
+		//fmt.Println(lastRead)
 
 		lock.Unlock()
 		time.Sleep(UpdateTime)
