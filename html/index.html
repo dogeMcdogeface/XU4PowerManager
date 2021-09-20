@@ -37,6 +37,9 @@
         var Thermal0 = data.map(function (item) {
             return item.Thermal0 / 1000;
         });
+        var Freq0 = data.map(function (item) {
+            return item.Freq0 / 1000;
+        });
 
 
         //console.log(data)
@@ -52,7 +55,7 @@
                 mode: 'lines',
                 line: {color: '#80CAF6'}
             }, {
-                y: Thermal0,
+                y: Freq0,
                 x: timetable,
                 mode: 'lines',
                 line: {color: '#DF56F1'}
@@ -109,7 +112,7 @@
         }
 
         Plotly.extendTraces('myDiv', {
-            y: [[data.Thermal0 / 1000], [data.Thermal0 / 1000]],
+            y: [[data.Thermal0 / 1000], [data.Freq0 ]],
             x: [[time1], [time1]]
 
         }, [0, 1])
