@@ -86,15 +86,6 @@
     requestLast.onload = function () {
         //console.log(requestLast.response)
         var data = requestLast.response
-
-
-        Plotly.extendTraces('myDiv', {
-            y: [[data.Thermal0 / 1000], [data.Thermal0 / 1000]],
-            x: [[time1], [time1]]
-
-        }, [0, 1])
-
-
         var time1 = new Date(data.Time)
         var time2 = new Date(data.Time)
         time2.setMinutes(time1.getMinutes() - 2);
@@ -111,6 +102,12 @@
         if (autoScroll) {
             Plotly.relayout('myDiv', minuteView);
         }
+
+        Plotly.extendTraces('myDiv', {
+            y: [[data.Thermal0 / 1000], [data.Thermal0 / 1000]],
+            x: [[time1], [time1]]
+
+        }, [0, 1])
 
     };
 
