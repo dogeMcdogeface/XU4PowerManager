@@ -21,17 +21,21 @@ func handlerDefault(w http.ResponseWriter, r *http.Request) {
 }
 
 func handlerLast(w http.ResponseWriter, r *http.Request) {
-	jsonString, _ := json.Marshal(HWReader.GetLast())
-	fmt.Fprintf(w, string(jsonString))
+	//jsonString, _ := json.Marshal(HWReader.GetLast())
+	//fmt.Fprintf(w, string(jsonString))
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(HWReader.GetLast())
+
 }
 
 func handlerHistory(w http.ResponseWriter, r *http.Request) {
-	jsonString, _ := json.Marshal(HWReader.GetHistory())
-	fmt.Fprintf(w, string(jsonString))
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(HWReader.GetHistory())
 }
 
 func Start() {
-	http.HandleFunc("/", handlerDefault)
+	http.Handle("/", http.FileServer(http.Dir("./html")))
 	http.HandleFunc("/last", handlerLast)
 	http.HandleFunc("/history", handlerHistory)
 	log.Fatal(http.ListenAndServe(":9012", nil))

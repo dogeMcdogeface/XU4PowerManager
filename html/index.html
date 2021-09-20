@@ -1,0 +1,72 @@
+<head>
+    <!-- Load plotly.js into the DOM -->
+    <script src='https://cdn.plot.ly/plotly-2.4.2.min.js'></script>
+</head>
+
+<body>
+<div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+
+<script>
+
+
+    /************** REQUEST HISTORY ******************/
+    let requestHistory = new XMLHttpRequest();
+    requestHistory.responseType = 'json';
+    requestHistory.open('GET', window.location.href + "history");
+    requestHistory.onload = function () {
+        console.log(requestHistory.response)
+
+        /************** CREATE PLOT **********************/
+        data = requestHistory.response
+        var timetable = data.map(function(item) {
+            return item.Time;
+        });
+        var Thermal0 = data.map(function(item) {
+            return item.Thermal0;
+        });
+
+
+        console.log(timetable)
+        console.log(Thermal0)
+
+
+        var trace1 = {
+            x: Thermal0,
+            y: timetable,
+            type: 'scatter'
+        };
+
+        var trace2 = {
+            x: timetable,
+            y: Thermal0,
+            type: 'scatter'
+        };
+
+        var data = [trace1/*, trace2*/];
+
+        Plotly.newPlot('myDiv', data);
+
+    };
+    requestHistory.send()
+
+
+
+
+
+    /************** REQUEST DATA UPDATE **************/
+    let requestLast = new XMLHttpRequest();
+    requestLast.responseType = 'json';
+    requestLast.onload = function () {
+        console.log(requestLast.response)
+    };
+    setInterval(function() {
+        requestLast.open('GET', window.location.href + "last");
+        requestLast.send()
+    }, 100000);
+
+
+
+</script>
+
+</body>
+</html>
