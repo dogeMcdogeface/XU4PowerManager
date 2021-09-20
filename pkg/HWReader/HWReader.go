@@ -29,7 +29,7 @@ func Start() {
 		for key, value := range Sensors {
 			LastRead[key] = readSensor(value)
 		}
-		History[0] = LastRead
+		History[HistoryIndex] = LastRead
 		HistoryIndex = (HistoryIndex + 1) % HistoryLength
 
 		fmt.Println(LastRead)
