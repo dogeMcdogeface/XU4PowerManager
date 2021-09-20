@@ -1,10 +1,22 @@
 <head>
     <!-- Load plotly.js into the DOM -->
     <script src='https://cdn.plot.ly/plotly-2.4.2.min.js'></script>
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .full-height {
+            height: 100%;
+            background: yellow;
+        }
+    </style>
 </head>
 
 <body>
-<div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+<div class="full-height", id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
 
 <script>
 
@@ -50,46 +62,46 @@
         Plotly.newPlot('myDiv', [{
                 y: Thermal0,
                 x: timetable,
-                xaxis: 'x1',
+                // xaxis: 'x1',
                 yaxis: 'y1',
                 mode: 'lines',
                 line: {color: '#80CAF6'}
             }, {
                 y: Freq0,
                 x: timetable,
-                xaxis: 'x2',
+                //xaxis: 'x2',
                 yaxis: 'y2',
                 mode: 'lines',
                 line: {color: '#DF56F1'}
             }],
             {
                 /*********** SUBPLOT 1 ***************/
-                xaxis1: {
+                xaxis: {
                     anchor: 'x1',
                     type: 'date',
                     range: [-1, -1],
                     domain: [0, 1]
                 },
-                yaxis1: {
+                yaxis: {
                     anchor: 'y1',
                     type: 'number',
                     range: [0, 100],
                     domain: [0.6, 1]
                 },
                 /*********** SUBPLOT 2 ***************/
-                xaxis2: {
-                    anchor: 'y2',
-                    type: 'date',
-                    range: [-1, -1],
-                    domain: [0, 1]
-                },
+                /* xaxis2: {
+                     anchor: 'y2',
+                     type: 'date',
+                     range: [-1, -1],
+                     domain: [0, 1]
+                 },*/
                 yaxis2: {
                     anchor: 'x2',
                     type: 'number',
                     range: [0, 10000000],
                     domain: [0, 0.5]
                 }
-            }
+            }, {responsive: true}
         );
 
 
@@ -122,6 +134,10 @@
         var minuteView = {
             custom: true,
             xaxis: {
+                type: 'date',
+                range: [time2, time1]
+            },
+            xaxis2: {
                 type: 'date',
                 range: [time2, time1]
             }
