@@ -85,7 +85,7 @@
                 yaxis: ya,
                 mode: mode,
                 line: {
-                    dash: 'dashdot',
+                    dash: 'line',
                     //color: '#80CAF6'
                 }
             }
@@ -96,7 +96,17 @@
 
 
         Plotly.newPlot('myDiv', traces,
-            {                colorway : ['#f3cec9', '#e7a4b6', '#cd7eaf', '#a262a9', '#6f4d96', '#3d3b72', '#182844'],
+            {
+                colorway: [
+                    'rgba(255,0,200,0.52)',
+                    'rgba(149,0,255,0.52)',
+                    'rgba(0,217,255,0.52)',
+                    'rgba(38,255,0,0.52)',
+                    'rgba(255,213,0,0.52)',
+                    'rgba(255,0,0,0.52)',
+                    'rgba(98,180,79,0.52)',
+                    'rgba(213,115,220,0.52)',
+                ],
 
 
                 /*********** SUBPLOT 1 ***************/
