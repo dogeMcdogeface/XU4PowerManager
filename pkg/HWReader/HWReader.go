@@ -1,7 +1,6 @@
 package HWReader
 
 import (
-	"fmt"
 	"io/ioutil"
 	"strconv"
 	"strings"
@@ -9,24 +8,27 @@ import (
 	"time"
 )
 
-var enabled = false
+/***************** CONFIGURATION VARIABLES *************************/
 
 var UpdateTime = 100 * time.Millisecond
 var HistoryDuration = 5 * time.Second
 
 var Sensors = map[string]string{
 	"Thermal0": "/sys/devices/virtual/thermal/thermal_zone0/temp",
+	"Freq0":    "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq",
 }
 
+/***************** RUNTIME VARIABLES *******************************/
 var HistoryLength = int((5 * time.Second) / UpdateTime)
 var HistoryIndex = 0
 
 var lastRead = map[string]interface{}{}
 var history = make([]map[string]interface{}, HistoryLength)
 
+var enabled = false
 var lock sync.Mutex
 
-/*****************************************************************/
+/***************** MAIN METHOD *************************************/
 func Start() {
 	enabled = true
 
@@ -55,10 +57,10 @@ func readSensor(path string) int {
 	in, _ := ioutil.ReadFile(path)
 	inTxt := strings.TrimSpace(string(in))
 	value, _ := strconv.Atoi(inTxt)
-
-	fmt.Println(path, value)
 	return value
 }
+
+/***************** GETTERS *****************************************/
 
 func GetLast() map[string]interface{} {
 	lock.Lock()
