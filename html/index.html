@@ -21,6 +21,11 @@
         /************** CREATE PLOT **********************/
         data = requestHistory.response
 
+        if(data.includes(null)){
+            location.reload();
+            return;
+        }
+
         data.sort((a, b) => new Date(a.Time).getTime() - new Date(b.Time).getTime());
 
 
