@@ -49,24 +49,46 @@
             type: 'scatter'
         };
 
-        var data = [trace1/*, trace2*/];
 
-        Plotly.newPlot('myDiv', data);
+        Plotly.newPlot('myDiv', [{
+            y: Thermal0,
+            x: timetable,
+            mode: 'lines',
+            line: {color: '#80CAF6'}
+        }, {
+            y: Thermal0,
+            x: timetable,
+            mode: 'lines',
+            line: {color: '#DF56F1'}
+        }]);
+
 
     };
     requestHistory.send()
 
+    function rand() {
+        return Math.random();
+    }
 
     /************** REQUEST DATA UPDATE **************/
-    /*let requestLast = new XMLHttpRequest();
+    let requestLast = new XMLHttpRequest();
     requestLast.responseType = 'json';
     requestLast.onload = function () {
         console.log(requestLast.response)
+        var data = requestLast.response
+
+
+        Plotly.extendTraces('myDiv', {
+            y: [[data.Thermal0], [data.Thermal0]],
+            x: [[data.Time], [data.Time]]
+
+        }, [0, 1])
+
     };
     setInterval(function() {
         requestLast.open('GET', window.location.href + "last");
         requestLast.send()
-    }, 100000);*/
+    }, 10);
 
 
 </script>
