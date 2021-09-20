@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"strconv"
+	"sync"
 	"time"
 )
 
@@ -18,24 +19,28 @@ var Sensors = map[string]string{
 
 var HistoryLength = int((5 * time.Second) / UpdateTime)
 var HistoryIndex = 0
-var LastRead = map[string]interface{}{}
-var History = make([]map[string]interface{}, HistoryLength)
+
+var lastRead = map[string]interface{}{}
+var history = make([]map[string]interface{}, HistoryLength)
+
+var lock sync.Mutex
 
 func Start() {
 	enabled = true
 
 	for enabled == true {
-
-		LastRead["Time"] = time.Now()
+		lock.Lock()
+		lastRead["Time"] = time.Now()
 		for key, value := range Sensors {
-			LastRead[key] = readSensor(value)
+			lastRead[key] = readSensor(value)
 		}
-		History[HistoryIndex] = LastRead
+		history[HistoryIndex] = lastRead
 		HistoryIndex = (HistoryIndex + 1) % HistoryLength
 
-		fmt.Println(LastRead)
+		fmt.Println(lastRead)
 
 		fmt.Println("Update")
+		lock.Unlock()
 		time.Sleep(UpdateTime)
 	}
 }
@@ -49,4 +54,16 @@ func readSensor(path string) int {
 	value, _ := strconv.Atoi(string(content))
 
 	return value
+}
+
+func GetLast() map[string]interface{} {
+	lock.Lock()
+	defer lock.Unlock()
+	return lastRead
+}
+
+func GetHistory() []map[string]interface{} {
+	lock.Lock()
+	defer lock.Unlock()
+	return history
 }
