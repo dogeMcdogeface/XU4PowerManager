@@ -19,37 +19,22 @@
         console.log(requestHistory.response)
 
         /************** CREATE PLOT **********************/
-        data = requestHistory.response
+        history = requestHistory.response
 
-        data.sort((a, b) => new Date(a.Time).getTime() - new Date(b.Time).getTime());
-
-
-        console.log(data)
+        history.sort((a, b) => new Date(a.Time).getTime() - new Date(b.Time).getTime());
 
 
-        var timetable = data.map(function (item) {
+        var timetable = history.map(function (item) {
             return new Date(item.Time);
         });
-        var Thermal0 = data.map(function (item) {
+        var Thermal0 = history.map(function (item) {
             return item.Thermal0 / 1000;
         });
 
 
-        console.log(timetable)
-        console.log(Thermal0)
-
-
-        var trace1 = {
-            x: timetable,
-            y: Thermal0,
-            type: 'scatter'
-        };
-
-        var trace2 = {
-            x: timetable,
-            y: Thermal0,
-            type: 'scatter'
-        };
+        //console.log(history)
+        //console.log(timetable)
+        //console.log(Thermal0)
 
 
         Plotly.newPlot('myDiv', [{
@@ -79,7 +64,7 @@
         myDiv.on('plotly_relayout', function (eventdata) {
             if (eventdata.custom) {
                 return;
-            }else if ( new Date(eventdata["xaxis.range[0]"]).getTime() > 0 || eventdata["xaxis.autorange"]) {
+            } else if (new Date(eventdata["xaxis.range[0]"]).getTime() > 0 || eventdata["xaxis.autorange"]) {
                 autoScroll = false;
             } else {
                 autoScroll = true;
@@ -110,15 +95,16 @@
             }
         };
 
-        if (autoScroll) {
-            Plotly.relayout('myDiv', minuteView);
-        }
+
 
         Plotly.extendTraces('myDiv', {
             y: [[data.Thermal0 / 1000], [data.Thermal0 / 1000]],
             x: [[time1], [time1]]
 
         }, [0, 1])
+        if (autoScroll) {
+            Plotly.relayout('myDiv', minuteView);
+        }
 
     };
 
