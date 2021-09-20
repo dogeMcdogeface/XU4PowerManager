@@ -15,7 +15,17 @@ var HistoryDuration = 5 * time.Second
 
 var Sensors = map[string]string{
 	"Thermal0": "/sys/devices/virtual/thermal/thermal_zone0/temp",
+	"Thermal1": "/sys/devices/virtual/thermal/thermal_zone1/temp",
+	"Thermal2": "/sys/devices/virtual/thermal/thermal_zone2/temp",
+	"Thermal3": "/sys/devices/virtual/thermal/thermal_zone3/temp",
 	"Freq0":    "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq",
+	"Freq1":    "/sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq",
+	"Freq2":    "/sys/devices/system/cpu/cpu2/cpufreq/scaling_cur_freq",
+	"Freq3":    "/sys/devices/system/cpu/cpu3/cpufreq/scaling_cur_freq",
+	"Freq4":    "/sys/devices/system/cpu/cpu4/cpufreq/scaling_cur_freq",
+	"Freq5":    "/sys/devices/system/cpu/cpu5/cpufreq/scaling_cur_freq",
+	"Freq6":    "/sys/devices/system/cpu/cpu6/cpufreq/scaling_cur_freq",
+	"Freq7":    "/sys/devices/system/cpu/cpu7/cpufreq/scaling_cur_freq",
 }
 
 /***************** RUNTIME VARIABLES *******************************/
