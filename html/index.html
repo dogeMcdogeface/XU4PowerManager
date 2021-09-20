@@ -71,8 +71,24 @@
     let requestLast = new XMLHttpRequest();
     requestLast.responseType = 'json';
     requestLast.onload = function () {
-        console.log(requestLast.response)
+        //console.log(requestLast.response)
         var data = requestLast.response
+        var time1 = new Date(data.Time)
+        var time2 = new Date(data.Time)
+        time2.setMinutes(time1.getMinutes() - 2);
+
+
+
+        var minuteView = {
+            xaxis: {
+                type: 'date',
+                range: [time2,time1]
+            }
+        };
+
+        console.log(time2,time1)
+
+        Plotly.relayout('myDiv', minuteView);
 
 
         Plotly.extendTraces('myDiv', {
