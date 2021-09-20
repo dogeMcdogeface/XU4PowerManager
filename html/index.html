@@ -95,16 +95,15 @@
             }
         };
 
-
+        if (autoScroll) {
+            Plotly.relayout('myDiv', minuteView);
+        }
 
         Plotly.extendTraces('myDiv', {
             y: [[data.Thermal0 / 1000], [data.Thermal0 / 1000]],
             x: [[time1], [time1]]
 
         }, [0, 1])
-        if (autoScroll) {
-            Plotly.relayout('myDiv', minuteView);
-        }
 
     };
 
