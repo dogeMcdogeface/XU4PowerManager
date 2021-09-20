@@ -52,9 +52,9 @@ func Stop() {
 
 func readSensor(path string) int {
 	content, _ := ioutil.ReadFile(path)
-	value, _ := strconv.Atoi(string(content))
+	value, err := strconv.Atoi(string(content))
 
-	fmt.Println(path, string(content), value)
+	fmt.Println(path, string(content), value, err)
 	return value
 }
 
