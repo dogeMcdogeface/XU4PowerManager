@@ -1,10 +1,3 @@
 package internal
 
-import "time"
-
 var Ver = "12.3"
-
-var Thermal0 = "/sys/devices/virtual/thermal/thermal_zone0/temp"
-
-var UpdateFrequency = 10.
-var UpdateTime = time.Second / time.Duration(UpdateFrequency)
