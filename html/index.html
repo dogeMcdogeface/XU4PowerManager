@@ -73,9 +73,8 @@
     requestLast.onload = function () {
         //console.log(requestLast.response)
         var data = requestLast.response
-        var time1 = new Date(data.Time)
-        time1.setU
-        var time2 = new Date(data.Time)
+        var time1 = Date.parse(data.Time)
+        var time2 = Date.parse(data.Time)
         time2.setMinutes(time1.getUTCMinutes() - 2);
 
 
