@@ -20,6 +20,6 @@ func main() {
 
 	go Server.Start()
 
-	go HWReader.Start()
+	HWReader.Start()
 
 }
