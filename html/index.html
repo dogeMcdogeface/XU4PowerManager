@@ -87,7 +87,6 @@
         var time1 = new Date(data.Time)
         var time2 = new Date(data.Time)
         time2.setMinutes(time1.getMinutes() - 2);
-        console.log(data.Time, time2, time1)
 
 
         var minuteView = {
@@ -97,7 +96,6 @@
             }
         };
 
-        //console.log(time2,time1)
 
         Plotly.relayout('myDiv', minuteView);
 
