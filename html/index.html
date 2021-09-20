@@ -50,21 +50,9 @@
         }
         for (var row in history) {
             for (var key in history[row]) {
-                flippedData[key][row] = parseInput(key, history[row][key]);
+                flippedData[key][row] = parseInput(key, history[row]);
             }
         }
-
-        function parseInput(key, item) {
-            if (key.includes("Thermal"))
-                return item / 1000;
-            else if (key.includes("Fan"))
-                return item / 255.0 * 100.0
-            else if (key.includes("Freq"))
-                return item
-            else
-                return item
-        }
-
 
         var traces = [];
 
@@ -100,33 +88,6 @@
 
         console.log("flippedData", flippedData)
         console.log("traces", traces)
-
-
-        /*var timetable = history.map(function (item) {
-            return new Date(item.Time);
-        });
-        var Thermal0 = history.map(function (item) {
-            return item.Thermal0 / 1000;
-        });
-        var Freq0 = history.map(function (item) {
-            return item.Freq0;
-        });
-
-        traces = [{
-            y: Thermal0,
-            x: timetable,
-            // xaxis: 'x1',
-            yaxis: 'y1',
-            mode: 'lines',
-            line: {color: '#80CAF6'}
-        }, {
-            y: Freq0,
-            x: timetable,
-            //xaxis: 'x2',
-            yaxis: 'y2',
-            mode: 'lines',
-            line: {color: '#DF56F1'}
-        }]*/
 
 
         Plotly.newPlot('myDiv', traces,
@@ -180,36 +141,46 @@
     let requestLast = new XMLHttpRequest();
     requestLast.responseType = 'json';
     requestLast.onload = function () {
-        //console.log(requestLast.response)
         var data = requestLast.response
-        var time1 = new Date(data.Time)
-        var time2 = new Date(data.Time)
-        time2.setMinutes(time1.getMinutes() - 2);
 
-
-        var minuteView = {
-            custom: true,
-            xaxis: {
-                type: 'date',
-                range: [time2, time1]
-            },
-            xaxis2: {
-                type: 'date',
-                range: [time2, time1]
-            }
-        };
-
+        /***** CALCULATE SCROLLING VIEW *****/
         if (autoScroll) {
+            var time1 = new Date(data.Time)
+            var time2 = new Date(data.Time)
+            time2.setMinutes(time1.getMinutes() - 2);
+            var minuteView = {
+                custom: true,
+                xaxis: {
+                    type: 'date',
+                    range: [time2, time1]
+                },
+                xaxis2: {
+                    type: 'date',
+                    range: [time2, time1]
+                }
+            };
             Plotly.relayout('myDiv', minuteView);
         }
 
+        /******** ADD NEW DATAPOINTS ********/
+        var newY = []
+        var newX = []
+        var indices = []
+        var i = 0;
+        for (var key in data) {
+            if (key == "Time") continue;
+            newY[i] = [parseInput(key, data)]
+            newX[i] = [parseInput("Time", data)]
+            indices[i] = i++
+        }
+        console.log(data)
+        console.log(newY)
+
         Plotly.extendTraces('myDiv', {
-            y: [[data.Thermal0 / 1000], [data.Freq0]],
-            x: [[time1], [time1]]
+            y: newY,    //[[data.Thermal0 / 1000], [data.Freq0]],
+            x: newX     //[[time1], [time1]]
 
-        }, [0, 1])
-
-
+        }, indices)
     };
 
 
@@ -218,6 +189,18 @@
         requestLast.send()
     }, 100);
 
+
+    function parseInput(key, item) {
+        item = item[key]
+        if (key.includes("Thermal"))
+            return item / 1000;
+        else if (key.includes("Fan"))
+            return item / 255.0 * 100.0
+        else if (key.includes("Freq"))
+            return item
+        else
+            return item
+    }
 
 </script>
 
