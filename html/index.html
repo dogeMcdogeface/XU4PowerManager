@@ -79,7 +79,7 @@
 
 
         Plotly.extendTraces('myDiv', {
-            y: [[data.Thermal0], [data.Thermal0]],
+            y: [[data.Thermal0 / 1000], [data.Thermal0 / 1000]],
             x: [[data.Time], [data.Time]]
 
         }, [0, 1])
