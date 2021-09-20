@@ -61,6 +61,7 @@
             var xa
             var ya;
             var cl;
+            var mode = 'lines';
 
             if (key == "Time")
                 continue;
@@ -70,6 +71,7 @@
             } else if (key.includes("Freq")) {
                 xa = 'x2';
                 ya = 'y2';
+                mode = 'hv'
             } else if (key.includes("Fan")) {
                 xa = 'x1';
                 ya = 'y1';
@@ -81,8 +83,11 @@
                 x: flippedData["Time"],
                 xaxis: xa,
                 yaxis: ya,
-                mode: 'lines',
-                //line: {color: '#80CAF6'}
+                mode: mode,
+                line: {
+                    dash: 'dashdot',
+                    //color: '#80CAF6'
+                }
             }
         }
 
