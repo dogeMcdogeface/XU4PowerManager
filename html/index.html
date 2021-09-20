@@ -51,16 +51,27 @@
 
 
         Plotly.newPlot('myDiv', [{
-            y: Thermal0,
-            x: timetable,
-            mode: 'lines',
-            line: {color: '#80CAF6'}
-        }, {
-            y: Thermal0,
-            x: timetable,
-            mode: 'lines',
-            line: {color: '#DF56F1'}
-        }]);
+                y: Thermal0,
+                x: timetable,
+                mode: 'lines',
+                line: {color: '#80CAF6'}
+            }, {
+                y: Thermal0,
+                x: timetable,
+                mode: 'lines',
+                line: {color: '#DF56F1'}
+            }],
+            {
+                xaxis: {
+                    type: 'date',
+                    range: [Date.now(), Date.now()]
+                },
+                yaxis: {
+                    type: 'number',
+                    range: [0, 100]
+                }
+            }
+        );
 
 
     };
@@ -76,14 +87,13 @@
         var time1 = new Date(data.Time)
         var time2 = new Date(data.Time)
         time2.setMinutes(time1.getMinutes() - 2);
-        console.log(data.Time, time2,time1)
-
+        console.log(data.Time, time2, time1)
 
 
         var minuteView = {
             xaxis: {
                 type: 'date',
-                range: [time2,time1]
+                range: [time2, time1]
             }
         };
 
@@ -99,7 +109,7 @@
         }, [0, 1])
 
     };
-    setInterval(function() {
+    setInterval(function () {
         requestLast.open('GET', window.location.href + "last");
         requestLast.send()
     }, 100);
