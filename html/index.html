@@ -66,9 +66,6 @@
     };
     requestHistory.send()
 
-    function rand() {
-        return Math.random();
-    }
 
     /************** REQUEST DATA UPDATE **************/
     let requestLast = new XMLHttpRequest();
@@ -78,14 +75,29 @@
         var data = requestLast.response
 
 
+
+        var time = data.Time
+        var olderTime = time.setMinutes(time.getMinutes() - 1);
+        var futureTime = time.setMinutes(time.getMinutes() + 1);
+
+        var minuteView = {
+            xaxis: {
+                type: 'date',
+                range: [olderTime, futureTime]
+            }
+        };
+
         Plotly.extendTraces('myDiv', {
             y: [[data.Thermal0 / 1000], [data.Thermal0 / 1000]],
             x: [[data.Time], [data.Time]]
 
         }, [0, 1])
 
+
+        Plotly.relayout('myDiv', minuteView);
+
     };
-    setInterval(function() {
+    setInterval(function () {
         requestLast.open('GET', window.location.href + "last");
         requestLast.send()
     }, 100);
