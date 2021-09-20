@@ -18,7 +18,7 @@ var Sensors = map[string]string{
 }
 
 var LastRead = map[string]interface{}{}
-var History = []map[string]interface{}{}
+var History = make([]map[string]interface{}, 1, 1)
 
 func Start() {
 	enabled = true
@@ -29,7 +29,7 @@ func Start() {
 		for key, value := range Sensors {
 			LastRead[key] = readSensor(value)
 		}
-		History[HistoryIndex] = LastRead
+		History[0] = LastRead
 		HistoryIndex = (HistoryIndex + 1) % HistoryLength
 
 		fmt.Println(LastRead)
