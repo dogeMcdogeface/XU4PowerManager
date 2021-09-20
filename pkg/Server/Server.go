@@ -24,13 +24,12 @@ func handlerLast(w http.ResponseWriter, r *http.Request) {
 	jsonString, _ := json.Marshal(HWReader.LastRead)
 	fmt.Println(jsonString)
 	fmt.Fprintf(w, string(jsonString))
-	/*fmt.Fprintf(w, "Temp is  %s!", Temp)*/
 }
 
 func handlerHistory(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Server says " + "12")
-	fmt.Fprintf(w, "history %s", "12")
-	/*fmt.Fprintf(w, "Temp is  %s!", Temp)*/
+	jsonString, _ := json.Marshal(HWReader.History)
+	fmt.Println(jsonString)
+	fmt.Fprintf(w, string(jsonString))
 }
 
 func Start() {

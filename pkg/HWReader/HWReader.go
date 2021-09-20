@@ -10,6 +10,8 @@ import (
 var enabled = false
 var UpdateFrequency = 10.
 var UpdateTime = time.Second / time.Duration(UpdateFrequency)
+var HistoryLength = int((5 * time.Second) / UpdateTime)
+var HistoryIndex = 0
 
 var Sensors = map[string]string{
 	"Thermal0": "/sys/devices/virtual/thermal/thermal_zone0/temp",
@@ -27,6 +29,9 @@ func Start() {
 		for key, value := range Sensors {
 			LastRead[key] = readSensor(value)
 		}
+		History[HistoryIndex] = LastRead
+		HistoryIndex = (HistoryIndex + 1) % HistoryLength
+
 		fmt.Println(LastRead)
 
 		fmt.Println("Update")
