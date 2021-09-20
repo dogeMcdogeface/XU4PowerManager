@@ -79,7 +79,7 @@
         myDiv.on('plotly_relayout', function (eventdata) {
             if (eventdata.custom) {
                 return;
-            }else if ( new Date(eventdata["xaxis.range[0]"]).getTime() > 0) {
+            }else if ( new Date(eventdata["xaxis.range[0]"]).getTime() > 0 || eventdata["xaxis.autorange"]) {
                 autoScroll = false;
             } else {
                 autoScroll = true;
