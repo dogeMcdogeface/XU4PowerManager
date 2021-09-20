@@ -18,13 +18,17 @@
 
         /************** CREATE PLOT **********************/
         data = requestHistory.response
-        data.sort((a, b) => new Date(a.lastUpdated).getTime() - new Date(b.lastUpdated).getTime());
+
+        data.sort((a, b) => new Date(a.Time).getTime() - new Date(b.Time).getTime());
 
 
-        var timetable = data.map(function(item) {
+        console.log(data)
+
+
+        var timetable = data.map(function (item) {
             return item.Time;
         });
-        var Thermal0 = data.map(function(item) {
+        var Thermal0 = data.map(function (item) {
             return item.Thermal0;
         });
 
@@ -35,7 +39,7 @@
 
         var trace1 = {
             x: timetable,
-            y: Thermal0 ,
+            y: Thermal0,
             type: 'scatter'
         };
 
@@ -53,9 +57,6 @@
     requestHistory.send()
 
 
-
-
-
     /************** REQUEST DATA UPDATE **************/
     /*let requestLast = new XMLHttpRequest();
     requestLast.responseType = 'json';
@@ -66,7 +67,6 @@
         requestLast.open('GET', window.location.href + "last");
         requestLast.send()
     }, 100000);*/
-
 
 
 </script>
