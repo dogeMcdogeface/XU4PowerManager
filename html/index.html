@@ -76,7 +76,7 @@
 
 
 
-        var time = data.Time
+        var time = new Date(data.Time).getTime()
         var olderTime = time.setMinutes(time.getMinutes() - 1);
         var futureTime = time.setMinutes(time.getMinutes() + 1);
 
