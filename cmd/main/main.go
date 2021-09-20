@@ -6,8 +6,6 @@ import (
 	"XU4PowerManager/pkg/Server"
 	"fmt"
 	_ "github.com/spf13/viper"
-	"io/ioutil"
-	"time"
 )
 
 /*func check(e error) {
