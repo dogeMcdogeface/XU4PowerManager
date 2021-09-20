@@ -20,6 +20,7 @@
         data = requestHistory.response
         data.sort((a, b) => new Date(a.lastUpdated).getTime() - new Date(b.lastUpdated).getTime());
 
+
         var timetable = data.map(function(item) {
             return item.Time;
         });
