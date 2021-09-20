@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 )
@@ -51,10 +52,11 @@ func Stop() {
 }
 
 func readSensor(path string) int {
-	content, _ := ioutil.ReadFile(path)
-	value, err := strconv.Atoi(string(content))
+	in, _ := ioutil.ReadFile(path)
+	inTxt := strings.TrimSpace(string(in))
+	value, _ := strconv.Atoi(inTxt)
 
-	fmt.Println(path, string(content), value, err)
+	fmt.Println(path, value)
 	return value
 }
 
