@@ -59,22 +59,22 @@
 
         var i = 0;
         for (var key in flippedData) {
-            var xa
             var ya;
             var cl;
             var mode = 'lines';
 
             if (key == "Time")
                 continue;
-            else if (key.includes("Thermal")) {
-                xa = 'x1';
+            else if (key.includes("ThermalGpu")) {
                 ya = 'y1';
+            } else if (key.includes("Thermal")) {
+                ya = 'y1';
+            } else if (key.includes("FreqGpu")) {
+                ya = 'y3';
             } else if (key.includes("Freq")) {
-                xa = 'x2';
                 ya = 'y2';
                 mode = 'hv'
             } else if (key.includes("Fan")) {
-                xa = 'x4';
                 ya = 'y4';
             }
 
@@ -82,10 +82,9 @@
                 name: key,
                 y: flippedData[key],
                 x: flippedData["Time"],
-                //xaxis: xa,
                 yaxis: ya,
                 mode: mode,
-                //fill: 'tonexty',
+                fill: 'tozeroy',//'tonexty',
                 //stackgroup: 'one',
                 line: {
                     dash: 'line',
@@ -124,7 +123,7 @@
             },
             /*********** SUBPLOT 3 ***************/
             yaxis3: {
-                title: {text: 'GPU Temperature'},
+                title: {text: 'GPU Frequency'},
                 type: 'number',
                 ticksuffix: "Ghz",
                 gridcolor: '#4c4c4c',
@@ -133,11 +132,11 @@
             },
             /*********** SUBPLOT 4 ***************/
             yaxis4: {
-                title: {text: 'GPU Frequency'},
+                title: {text: 'Fan Speed'},
                 type: 'number',
-                ticksuffix: "Ghz",
+                ticksuffix: "%",
                 gridcolor: '#4c4c4c',
-                range: [0, 30],
+                range: [0, 100],
                 domain: [0, 0.24]
             },
             margin: {
