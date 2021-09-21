@@ -9,8 +9,7 @@
         }
 
         .full-height {
-            height: 2000px;
-
+            height: 100%;
             background: #383838;
         }
     </style>
@@ -21,10 +20,30 @@
 
 <script>
 
+    /************** CONFIGURATION ********************/
 
+    var graph_color = "#232323";
+    var bg_color = "#383838";
+    var grid_color = '#383838';
+    var text_color = '#ffffff';
+
+    var fan_color = '#008aff';
+    var gpu_color = '#ff00ff';
+    var cpu_color = [
+        '#ff0000',
+        '#00eaff',
+        '#1aff00',
+        '#ff00e5',
+        '#ff5900',
+        '#fffb00',
+        '#005eff',
+        '#b37fff',
+
+    ]
+
+
+    /************** WORKING VARIABLES ****************/
     var autoScroll = true;
-
-
     /************** REQUEST HISTORY ******************/
     let requestHistory = new XMLHttpRequest();
     requestHistory.responseType = 'json';
@@ -67,15 +86,20 @@
                 continue;
             else if (key.includes("ThermalGpu")) {
                 ya = 'y1';
+                cl = gpu_color;
             } else if (key.includes("Thermal")) {
                 ya = 'y1';
+                cl = cpu_color[i%8];
             } else if (key.includes("FreqGpu")) {
                 ya = 'y3';
+                cl = gpu_color;
             } else if (key.includes("Freq")) {
                 ya = 'y2';
                 mode = 'hv'
+                cl = cpu_color[i%8];
             } else if (key.includes("Fan")) {
                 ya = 'y4';
+                cl = fan_color;
             }
 
             traces[i++] = {
@@ -88,7 +112,7 @@
                 //stackgroup: 'one',
                 line: {
                     dash: 'line',
-                    //color: '#80CAF6'
+                    color: cl,
                 }
             }
         }
@@ -108,7 +132,7 @@
                 title: {text: 'Core Temperatures'},
                 type: 'number',
                 ticksuffix: "°C",
-                gridcolor: '#4c4c4c',
+                gridcolor: grid_color,
                 range: [20, 100],
                 domain: [0.76, 1]
             },
@@ -117,7 +141,7 @@
                 title: {text: 'Core Frequencies'},
                 type: 'number',
                 ticksuffix: "Ghz",
-                gridcolor: '#4c4c4c',
+                gridcolor: grid_color,
                 range: [0, 3],
                 domain: [0.51, 0.74]
             },
@@ -125,8 +149,8 @@
             yaxis3: {
                 title: {text: 'GPU Frequency'},
                 type: 'number',
-                ticksuffix: "Ghz",
-                gridcolor: '#4c4c4c',
+                ticksuffix: "Mhz",
+                gridcolor: grid_color,
                 range: [0, 3],
                 domain: [0.26, 0.49]
             },
@@ -135,7 +159,7 @@
                 title: {text: 'Fan Speed'},
                 type: 'number',
                 ticksuffix: "%",
-                gridcolor: '#4c4c4c',
+                gridcolor: grid_color,
                 range: [0, 100],
                 domain: [0, 0.24]
             },
@@ -147,9 +171,9 @@
                 pad: 5
             },
             title: false,
-            font: {color: '#ffffff'},
-            plot_bgcolor: "#232323",
-            paper_bgcolor: "#383838"
+            font: {color: text_color},
+            plot_bgcolor: graph_color,
+            paper_bgcolor: bg_color
 
         };
 
@@ -197,7 +221,7 @@
             var minuteView = {
                 custom: true,
                 xaxis: {
-                    gridcolor: '#4c4c4c',
+                    gridcolor: grid_color,
                     anchor: 'free',
                     position: '1',
                     type: 'date',
@@ -243,7 +267,7 @@
         else if (key.includes("Fan"))
             return item / 255.0 * 100.0
         else if (key.includes("FreqGpu"))
-            return item / 1000000000.0
+            return item / 1000000.0
         else if (key.includes("Freq"))
             return item / 1000000.0
         else if (key.includes("Time"))
