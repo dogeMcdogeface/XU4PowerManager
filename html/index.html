@@ -82,6 +82,7 @@
             var ya;
             var cl;
             var lg = 'misc';
+            var fill = ''; //'tozeroy',//'tonexty',
             var mode = 'lines';
 
             if (key == "Time")
@@ -103,6 +104,7 @@
                 cl = cpu_color[(4+ c++)%8];
             } else if (key.includes("Fan")) {
                 ya = 'y4';
+                fill = 'tozeroy';
                 cl = fan_color;
             }
 
@@ -113,7 +115,7 @@
                 x: flippedData["Time"],
                 yaxis: ya,
                 mode: mode,
-                //fill: 'tozeroy',//'tonexty',
+                fill: fill,
                 //stackgroup: 'one',
                 line: {
                     width: 3,
