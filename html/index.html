@@ -30,14 +30,14 @@
     var fan_color = '#008aff';
     var gpu_color = '#ff00ff';
     var cpu_color = [
-        'rgba(255,0,0,0.5)',
-        'rgba(0,234,255,0.5)',
-        'rgba(26,255,0,0.5)',
-        'rgba(255,0,229,0.5)',
-        'rgba(255,89,0,0.5)',
-        'rgba(255,251,0,0.5)',
-        'rgba(0,94,255,0.5)',
-        'rgba(179,127,255,0.5)',
+        '#ff0000',
+        '#00eaff',
+        '#1aff00',
+        '#ff00e5',
+        '#ff5900',
+        '#fffb00',
+        '#005eff',
+        '#b37fff',
 
     ]
 
@@ -77,9 +77,11 @@
         var traces = [];
 
         var i = 0;
+        var c = 0;
         for (var key in flippedData) {
             var ya;
             var cl;
+            var lg = 'misc';
             var mode = 'lines';
 
             if (key == "Time")
@@ -88,15 +90,17 @@
                 ya = 'y1';
                 cl = gpu_color;
             } else if (key.includes("Thermal")) {
+                lg = 'Thermal'
                 ya = 'y1';
-                cl = cpu_color[i%8];
+                cl = cpu_color[(c++)%8];
             } else if (key.includes("FreqGpu")) {
                 ya = 'y3';
                 cl = gpu_color;
             } else if (key.includes("Freq")) {
+                lg = 'Freq'
                 ya = 'y2';
                 mode = 'hv'
-                cl = cpu_color[i%8];
+                cl = cpu_color[(4+ c++)%8];
             } else if (key.includes("Fan")) {
                 ya = 'y4';
                 cl = fan_color;
@@ -104,6 +108,7 @@
 
             traces[i++] = {
                 name: key,
+                legendgroup: lg,
                 y: flippedData[key],
                 x: flippedData["Time"],
                 yaxis: ya,
@@ -111,6 +116,7 @@
                 //fill: 'tozeroy',//'tonexty',
                 //stackgroup: 'one',
                 line: {
+                    width: 3,
                     dash: 'line',
                     color: cl,
                 }
@@ -173,8 +179,9 @@
             title: false,
             font: {color: text_color},
             plot_bgcolor: graph_color,
-            paper_bgcolor: bg_color
+            paper_bgcolor: bg_color,
 
+            legend: {traceorder: 'normal+grouped'},
         };
 
         Plotly.newPlot('myDiv', traces, layout, {responsive: true});
