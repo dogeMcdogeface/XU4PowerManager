@@ -16,10 +16,8 @@ import (
 
 func main() {
 	fmt.Println("Starting XU4 Power Manager ver." + internal.Ver)
-	fmt.Println("Server " + Server.Status)
 
 	go Server.Start()
-
 	HWReader.Start()
 
 }
