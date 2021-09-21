@@ -9,7 +9,8 @@
         }
 
         .full-height {
-            height: 100%;
+            height: 2000px;
+            //height: 200%;
             background: #383838;
         }
     </style>
@@ -108,6 +109,7 @@
                 title: {text: 'Core Temperatures'},
                 type: 'number',
                 ticksuffix: "°C",
+                gridcolor: '#4c4c4c',
                 range: [20, 100],
                 domain: [0.76, 1]
             },
@@ -116,6 +118,7 @@
                 title: {text: 'Core Frequencies'},
                 type: 'number',
                 ticksuffix: "Ghz",
+                gridcolor: '#4c4c4c',
                 range: [0, 3],
                 domain: [0.51, 0.74]
             },
@@ -124,6 +127,7 @@
                 title: {text: 'GPU Temperature'},
                 type: 'number',
                 ticksuffix: "Ghz",
+                gridcolor: '#4c4c4c',
                 range: [0, 3],
                 domain: [0.26, 0.49]
             },
@@ -132,6 +136,7 @@
                 title: {text: 'GPU Frequency'},
                 type: 'number',
                 ticksuffix: "Ghz",
+                gridcolor: '#4c4c4c',
                 range: [0, 30],
                 domain: [0, 0.24]
             },
@@ -144,43 +149,24 @@
             },
             title: false,
             font: {color: '#ffffff'},
-            plot_bgcolor:"#232323",
-            paper_bgcolor:"#383838"
+            plot_bgcolor: "#232323",
+            paper_bgcolor: "#383838"
 
         };
-
-        /*yaxis: {domain: []},
-        yaxis2: {domain: []},
-        yaxis3: {domain: []},
-        yaxis4: {domain: []},*/
 
         Plotly.newPlot('myDiv', traces, layout, {responsive: true});
 
 
-        /* Plotly.newPlot('myDiv', traces,
-             {
-                 colorway: [
-                     'rgba(255,0,200,0.52)',
-                     'rgba(149,0,255,0.52)',
-                     'rgba(0,34,255,0.52)',
-                     'rgba(38,255,0,0.52)',
-                     'rgba(255,213,0,0.52)',
-                     'rgba(255,0,0,0.52)',
-                     'rgba(98,180,79,0.52)',
-                     'rgba(213,115,220,0.52)',
-                 ],
-
-
-                 / *********** SUBPLOT 1 *************** /
-                 xaxis: {
-                     anchor: 'x1',
-                     type: 'date',
-                     range: [-1, -1],
-                     domain: [0, 1]
-                 },
-
-             },
-         );*/
+        /* colorway: [
+             'rgba(255,0,200,0.52)',
+             'rgba(149,0,255,0.52)',
+             'rgba(0,34,255,0.52)',
+             'rgba(38,255,0,0.52)',
+             'rgba(255,213,0,0.52)',
+             'rgba(255,0,0,0.52)',
+             'rgba(98,180,79,0.52)',
+             'rgba(213,115,220,0.52)',
+*/
 
 
         myDiv.on('plotly_relayout', function (eventdata) {
@@ -212,8 +198,9 @@
             var minuteView = {
                 custom: true,
                 xaxis: {
+                    gridcolor: '#4c4c4c',
                     anchor: 'free',
-                    position:'1',
+                    position: '1',
                     type: 'date',
                     range: [time2, time1]
                 },
