@@ -33,6 +33,7 @@ var Sensors = SystemStatus{
 		"FreqGpu": "/sys/devices/platform/soc/11800000.gpu/devfreq/11800000.gpu/cur_freq",
 	}, Fans: map[string]interface{}{
 		"FanSpeed": "/sys/devices/platform/pwm-fan/hwmon/hwmon0/pwm1",
+		"FanSpeed": "/sys/class/leds/blue\\:heartbeat/brightness",
 	}, Stats: map[string]interface{}{},
 }
 
