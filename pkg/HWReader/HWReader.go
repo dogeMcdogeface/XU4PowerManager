@@ -10,7 +10,7 @@ import (
 )
 
 /***************** CONFIGURATION VARIABLES *************************/
-var UpdateTime = 00 * time.Millisecond
+var UpdateTime = 500 * time.Millisecond
 var LogTime = 2 * time.Second
 var cacheLifetime = 10 * time.Millisecond
 
@@ -39,7 +39,12 @@ var Sensors = SystemStatus{
 
 /***************** RUNTIME VARIABLES *******************************/
 var enabled = false
+var systemMonitoring = true
+var systemLogging = true
+var systemHandling = true
+
 var cachedSystemStatus = SystemStatus{}
+var averageSystemStatus = SystemStatus{}
 var lock sync.Mutex
 
 /***************** MAIN METHOD *************************************/
@@ -50,7 +55,15 @@ func Start() {
 		var s = GetSystemStatus() //poll hardware
 
 		//calculate averages
+		var avg = 0
+		var i = 0
+		for _, value := range s.Therm {
 
+			avg = ((avg * i) + int(value.(byte))) / (i + 1)
+			i++
+		}
+
+		fmt.Println(avg)
 		fmt.Println(s)
 		time.Sleep(UpdateTime)
 	}
