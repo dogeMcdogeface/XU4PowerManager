@@ -1,8 +1,10 @@
 package HWReader
 
 import (
+	"encoding/binary"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
 	"sync"
@@ -11,8 +13,10 @@ import (
 
 /***************** CONFIGURATION VARIABLES *************************/
 var UpdateTime = 500 * time.Millisecond
-var LogTime = 2 * time.Second
+var LogTime = 1 * time.Second
 var cacheLifetime = 10 * time.Millisecond
+
+var logPath = "log.csv"
 
 var Sensors = SystemStatus{
 	Therm: map[string]interface{}{
@@ -44,7 +48,7 @@ var systemLogging = true
 var systemHandling = true
 
 var cachedSystemStatus = SystemStatus{}
-var averageSystemStatus = average{}
+var averageSystemStatus = SystemAverage{}
 var lock sync.Mutex
 
 /***************** MAIN METHOD *************************************/
@@ -54,45 +58,15 @@ func Start() {
 	for enabled == true {
 		var s = GetSystemStatus() //poll hardware
 
-		//calculate averages
+		manageLogging(s) //calculate and log averages
+		//manageHardware(s)
 
-		for _, value := range s.Therm {
-			averageSystemStatus.Add(int(value.(byte)))
-		}
-
-		fmt.Println(averageSystemStatus)
-		fmt.Println(s)
+		//fmt.Println(s)
 		time.Sleep(UpdateTime)
 	}
 }
-
-type average struct {
-	count int
-	Value float64
-}
-
-func (a average) Find(v ...int) float64 {
-	a.count = 0
-	a.Value = 0
-	return a.Add(v...)
-}
-func (a *average) Add(v ...int) float64 {
-	for _, value := range v {
-		a.Value = ((a.Value * float64(a.count)) + float64(value)) / float64(a.count+1)
-		a.count++
-	}
-	return a.Value
-}
-
 func Stop() {
 	enabled = false
-}
-
-func readFile(path string) int {
-	in, _ := ioutil.ReadFile(path)
-	inTxt := strings.TrimSpace(string(in))
-	value, _ := strconv.Atoi(inTxt)
-	return value
 }
 
 func readSystemStatus() SystemStatus {
@@ -103,7 +77,7 @@ func readSystemStatus() SystemStatus {
 	/**** READ TEMPS ****/
 	s.Therm = map[string]interface{}{}
 	for key, value := range Sensors.Therm {
-		s.Therm[key] = byte(readFile(value.(string)) / 1000)
+		s.Therm[key] = byte(readFile(value.(string))/1000 + 55)
 	}
 	/**** READ FREQS ****/
 	s.Freq = map[string]interface{}{}
@@ -123,6 +97,53 @@ func readSystemStatus() SystemStatus {
 
 	cachedSystemStatus = s
 	return s
+}
+func readFile(path string) int {
+	in, _ := ioutil.ReadFile(path)
+	inTxt := strings.TrimSpace(string(in))
+	value, _ := strconv.Atoi(inTxt)
+	return value
+}
+
+func manageLogging(s SystemStatus) {
+	if time.Since(averageSystemStatus.Time) > LogTime {
+		if averageSystemStatus.Time.Second() > 0 {
+			averageSystemStatus.LogAverage(logPath) //save average
+			//fmt.Println(readLogFile())              //
+		}
+		averageSystemStatus = SystemAverage{Time: time.Now()}
+
+	}
+	for _, value := range s.Therm { //calculate averages
+		averageSystemStatus.Therm.Add(int(value.(byte)))
+	}
+}
+
+func readLogFile() (list []SystemAverage) {
+	list = []SystemAverage{}
+
+	f, err := os.Open(logPath)
+	if err != nil {
+		fmt.Println(err)
+		return list
+	}
+	defer f.Close()
+
+	for true {
+		dateByte := make([]byte, 10)
+		_, err := f.Read(dateByte)
+		if err != nil {
+			break
+		}
+		date := int64(binary.LittleEndian.Uint64(dateByte[0:8]))
+		temp := int(binary.LittleEndian.Uint16(dateByte[8:10]))
+		//fmt.Println(dateByte, dateByte[0:8], dateByte[8:10], date, temp)
+		list = append(list, SystemAverage{
+			Time:  time.Unix(date, 0),
+			Therm: average{Value: temp},
+		})
+	}
+	return list
 }
 
 /***************** GETTERS *****************************************/
