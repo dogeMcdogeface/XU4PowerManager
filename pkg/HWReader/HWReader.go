@@ -10,7 +10,7 @@ import (
 )
 
 /***************** CONFIGURATION VARIABLES *************************/
-var UpdateTime = 500 * time.Millisecond
+var UpdateTime = 00 * time.Millisecond
 var LogTime = 2 * time.Second
 var cacheLifetime = 10 * time.Millisecond
 
