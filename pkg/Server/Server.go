@@ -25,7 +25,7 @@ func handlerLast(w http.ResponseWriter, r *http.Request) {
 	//fmt.Fprintf(w, string(jsonString))
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(HWReader.GetLast())
+	json.NewEncoder(w).Encode(HWReader.GetSystemStatus())
 
 }
 
