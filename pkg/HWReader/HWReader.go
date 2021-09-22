@@ -44,7 +44,7 @@ var systemLogging = true
 var systemHandling = true
 
 var cachedSystemStatus = SystemStatus{}
-var averageSystemStatus = SystemStatus{}
+var averageSystemStatus = average{}
 var lock sync.Mutex
 
 /***************** MAIN METHOD *************************************/
@@ -55,18 +55,33 @@ func Start() {
 		var s = GetSystemStatus() //poll hardware
 
 		//calculate averages
-		var avg = 0
-		var i = 0
-		for _, value := range s.Therm {
 
-			avg = ((avg * i) + int(value.(byte))) / (i + 1)
-			i++
+		for _, value := range s.Therm {
+			averageSystemStatus.Add(int(value.(byte)))
 		}
 
-		fmt.Println(avg)
+		fmt.Println(averageSystemStatus)
 		fmt.Println(s)
 		time.Sleep(UpdateTime)
 	}
+}
+
+type average struct {
+	count int
+	Value float64
+}
+
+func (a average) Find(v ...int) float64 {
+	a.count = 0
+	a.Value = 0
+	return a.Add(v...)
+}
+func (a *average) Add(v ...int) float64 {
+	for _, value := range v {
+		a.Value = ((a.Value * float64(a.count)) + float64(value)) / float64(a.count+1)
+		a.count++
+	}
+	return a.Value
 }
 
 func Stop() {
