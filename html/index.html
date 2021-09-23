@@ -87,12 +87,12 @@
                     trace.line.color = cpu_color[(c++) % 8];
                 } else if (category == "Freq") {
                     trace.yaxis = 'y2';
-                    trace.mode = 'hv'
+                    trace.line.shape = 'hv'
                     trace.line.color = cpu_color[(4 + c++) % 8];
                     ;
                 } else if (category == "Stats") {
                     trace.yaxis = 'y3';
-                    trace.mode = 'curve'
+                    trace.line.shape = 'spline'
                     //trace.line.color =
                 } else if (category == "Fans") {
                     trace.yaxis = 'y4';
@@ -250,7 +250,7 @@
             //fill: ,
             //stackgroup: 'one',
 
-            //mode: 'lines',
+            mode: 'lines',
             type: 'scatter',
             line: {
                 width: 3,
