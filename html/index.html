@@ -16,11 +16,14 @@
 </head>
 
 <body>
+
+
 <div class="full-height" , id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
 
 <script>
 
     /************** CONFIGURATION ********************/
+    var updateTime = 1000
 
     var graph_color = "#232323";
     var bg_color = "#383838";
@@ -41,92 +44,63 @@
 
     ]
 
-
     /************** WORKING VARIABLES ****************/
+    var graphExists = false;
     var autoScroll = true;
-    /************** REQUEST HISTORY ******************/
-    let requestHistory = new XMLHttpRequest();
-    requestHistory.responseType = 'json';
-    requestHistory.open('GET', window.location.href + "history");
-    requestHistory.onload = function () {
-        console.log(requestHistory.response)
-
-        /************** PARSE HISTORY DATA ***************/
-        var history = requestHistory.response
-
-        if (history.includes(null)) {
-            setTimeout(function () {
-                location.reload();
-            }, 1000);
-            return;
-        }
-
-        history.sort((a, b) => new Date(a.Time).getTime() - new Date(b.Time).getTime());
 
 
-        var flippedData = {};
-        for (var key in history[0]) {
-            if (flippedData[key] == null) flippedData[key] = [];
-        }
-        for (var row in history) {
-            for (var key in history[row]) {
-                flippedData[key][row] = parseInput(key, history[row]);
-            }
-        }
+    /************** MAIN PROGRAM *********************/
+    console.log("Starting")
+
+
+    var requestLast = new XMLHttpRequest();
+    requestLast.responseType = 'json';
+    requestLast.onload = function () {
+        updateGraph(requestLast.response);
+    }
+    setInterval(function () {
+        requestLast.open('GET', window.location.href + "last");
+        requestLast.send()
+    }, updateTime);
+
+
+    /********************* SETUP GRAPH *************************************************/
+    function setupGraph(data) {
+        console.log("setup graph", data)
 
         var traces = [];
 
-        var i = 0;
-        var c = 0;
-        for (var key in flippedData) {
-            var ya;
-            var cl;
-            var lg = 'misc';
-            var fill = ''; //'tozeroy',//'tonexty',
-            var mode = 'lines';
+        for (var category in data) {
+            if (category == "Time") continue;
+            var c = 0;
+            for (var key in data[category]) {
+                traces[traces.length] = trace = defaultTrace()
+                trace.name = key
+                trace.legendgroup = category
+                trace.x = [data["Time"]]
+                trace.y = [data[category][key]]
 
-            if (key == "Time")
-                continue;
-            else if (key.includes("ThermalGpu")) {
-                ya = 'y1';
-                cl = gpu_color;
-            } else if (key.includes("Thermal")) {
-                lg = 'Thermal'
-                ya = 'y1';
-                cl = cpu_color[(c++)%8];
-            } else if (key.includes("FreqGpu")) {
-                ya = 'y3';
-                cl = gpu_color;
-            } else if (key.includes("Freq")) {
-                lg = 'Freq'
-                ya = 'y2';
-                mode = 'hv'
-                cl = cpu_color[(4+ c++)%8];
-            } else if (key.includes("Fan")) {
-                ya = 'y4';
-                fill = 'tozeroy';
-                cl = fan_color;
-            }
-
-            traces[i++] = {
-                name: key,
-                legendgroup: lg,
-                y: flippedData[key],
-                x: flippedData["Time"],
-                yaxis: ya,
-                mode: mode,
-                fill: fill,
-                //stackgroup: 'one',
-                line: {
-                    width: 3,
-                    dash: 'line',
-                    color: cl,
+                if (category == "Thermal") {
+                    trace.yaxis = 'y1';
+                    trace.line.color = cpu_color[(c++) % 8];
+                } else if (category == "Freq") {
+                    trace.yaxis = 'y2';
+                    trace.mode = 'hv'
+                    trace.line.color = cpu_color[(4 + c++) % 8];
+                    ;
+                } else if (category == "Stats") {
+                    trace.yaxis = 'y3';
+                    trace.mode = 'curve'
+                    //trace.line.color =
+                } else if (category == "Fans") {
+                    trace.yaxis = 'y4';
+                    trace.fill = 'tozeroy';
+                    trace.line.color = fan_color;
                 }
+                //console.log(category, key, entry)
             }
         }
 
-        console.log("flippedData", flippedData)
-        console.log("traces", traces)
 
         var layout = {
             xaxis: {
@@ -146,7 +120,7 @@
             },
             /*********** SUBPLOT 2 ***************/
             yaxis2: {
-                title: {text: 'Core Frequencies'},
+                title: {text: 'Stats'},
                 type: 'number',
                 ticksuffix: "Ghz",
                 gridcolor: grid_color,
@@ -185,21 +159,7 @@
 
             legend: {traceorder: 'normal+grouped'},
         };
-
         Plotly.newPlot('myDiv', traces, layout, {responsive: true});
-
-
-        /* colorway: [
-             'rgba(255,0,200,0.52)',
-             'rgba(149,0,255,0.52)',
-             'rgba(0,34,255,0.52)',
-             'rgba(38,255,0,0.52)',
-             'rgba(255,213,0,0.52)',
-             'rgba(255,0,0,0.52)',
-             'rgba(98,180,79,0.52)',
-             'rgba(213,115,220,0.52)',
-*/
-
 
         myDiv.on('plotly_relayout', function (eventdata) {
             if (eventdata.custom) {
@@ -211,18 +171,14 @@
             }
         });
 
+        graphExists = true;
+    }
 
-    };
-    requestHistory.send()
+    /********************* UPDATE GRAPH ************************************************/
+    function updateGraph(data) {
+        if (!graphExists) return setupGraph(data)
+        console.log("updating graph", data)
 
-
-    /************** REQUEST DATA UPDATE **************/
-    let requestLast = new XMLHttpRequest();
-    requestLast.responseType = 'json';
-    requestLast.onload = function () {
-        var data = requestLast.response
-
-        /***** CALCULATE SCROLLING VIEW *****/
         if (autoScroll) {
             var time1 = new Date(data.Time)
             var time2 = new Date(data.Time)
@@ -246,44 +202,62 @@
         var newX = []
         var indices = []
         var i = 0;
-        for (var key in data) {
-            if (key == "Time") continue;
-            newY[i] = [parseInput(key, data)]
-            newX[i] = [parseInput("Time", data)]
-            indices[i] = i++
+        for (var category in data) {
+            if (category == "Time") continue;
+            for (var key in data[category]) {
+                newY[i] = [parseInput(category, key, data)]
+                newX[i] = [parseInput("Time", 0, data)]
+                indices[i] = i++
+            }
         }
-        console.log(data)
-        console.log(newY)
+        console.log("newY", newY)
+        console.log("newX", newX)
 
         Plotly.extendTraces('myDiv', {
             y: newY,    //[[data.Thermal0 / 1000], [data.Freq0]],
             x: newX     //[[time1], [time1]]
 
         }, indices)
-    };
 
-
-    setInterval(function () {
-        requestLast.open('GET', window.location.href + "last");
-        requestLast.send()
-    }, 100);
-
-
-    function parseInput(key, item) {
-        item = item[key]
-        if (key.includes("Thermal"))
-            return item / 1000;
-        else if (key.includes("Fan"))
-            return item / 255.0 * 100.0
-        else if (key.includes("FreqGpu"))
-            return item / 1000000.0
-        else if (key.includes("Freq"))
-            return item / 1000000.0
-        else if (key.includes("Time"))
-            return new Date(item)
-        else
-            return item
     }
+
+    function parseInput(category, key, data) {
+        value = data[category][key]
+        if (category == "Time")
+            return new Date(data.Time)
+        if (category == "Thermal")
+            return value / 1000
+        else if (category == "Freq")
+            return value / 1000000.0
+        else if (category == "Fans")
+            return value / 255.0 * 100.0
+        else if (category == "Stats")
+            return value
+        else
+            return value
+
+    }
+
+    function defaultTrace() {
+        return {
+            //name: key,
+            //legendgroup:,
+            //y: [key],
+            //x: ["Time"],
+            //yaxis: ,
+            //fill: ,
+            //stackgroup: 'one',
+
+            //mode: 'lines',
+            type: 'scatter',
+            line: {
+                width: 3,
+                dash: 'line',
+                //color: cl,
+            }
+        }
+    }
+
 
 </script>
 

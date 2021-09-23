@@ -1,0 +1,56 @@
+Invert blue led
+sudo nano /sys/devices/platform/pwmleds/leds/blue\:heartbeat/invert
+Turn off
+echo none > /sys/class/leds/blue\:heartbeat/trigger
+Turn on
+echo default-on > /sys/class/leds/blue\:heartbeat/trigger
+Heartbeat (original state)
+echo heartbeat > /sys/class/leds/blue\:heartbeat/trigger
+See available led modes
+cat /sys/devices/platform/pwmleds/leds/blue\:heartbeat/trigger
+>none rc-feedback kbd-scrolllock kbd-numlock kbd-capslock kbd-kanalock kbd-shiftlock kbd-altgrlock kbd-ctrllock kbd-altlock kbd-shiftllock kbd-shiftrlock kbd-ctrlllock kbd-ctrlrlock mmc0 mmc1 timer oneshot [heartbeat] gpio cpu cpu0 cpu1 cpu2 cpu3 cpu4 cpu5 cpu6 cpu7 default-on transient rfkill-any rfkill-none
+Brightness
+echo 250 >  /sys/class/leds/blue\:heartbeat/brightness
+
+
+CPU
+Policy 0 (0-1-2-3) Small cores
+Policy 4 (4-5-6-7) Big   cores
+Set Core Governor:
+echo powersave> /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
+Check available Governors
+cat /sys/devices/system/cpu/cpufreq/policy0/scaling_available_governors
+
+You can check the available list of governor and cpu speed under those nodes.
+/sys/devices/system/cpu/cpufreq/policy0/scaling_available_frequencies
+
+
+https://wiki.odroid.com/odroid-xu4/application_note/software/cpufrequtils_cpufreq_govornor
+
+
+GPU:
+See GPU frequency
+cat /sys/devices/platform/soc/11800000.gpu/devfreq/11800000.gpu/cur_freq
+Set Governor
+echo performance> /sys/devices/platform/soc/11800000.gpu/devfreq/11800000.gpu/governor
+See available Governors
+cat /sys/devices/platform/soc/11800000.gpu/devfreq/11800000.gpu/available_governors
+
+
+
+CPU usage info
+This sort of information is available under the /proc filesystem. See man proc.
+    /proc/loadavg gives load averages;
+    /proc/stat gives information on the amount of time the system spent in user/kernel mode, etc 
+    /proc/[pid]/stat contains information on CPU times for the given process.
+
+Memory usage:
+ cat /proc/meminfo
+
+
+Fan Control
+/sys/devices/platform/pwm-fan/hwmon/hwmon0
+
+After new 5.4 kernel: To Be Fixed
+https://forum.odroid.com/viewtopic.php?t=29211
+https://forum.odroid.com/viewtopic.php?f=99&t=43132

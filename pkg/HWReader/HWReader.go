@@ -37,8 +37,9 @@ var Sensors = SystemStatus{
 		"FreqGpu": "/sys/devices/platform/soc/11800000.gpu/devfreq/11800000.gpu/cur_freq",
 	}, Fans: map[string]interface{}{
 		"FanSpeed": "/sys/devices/platform/pwm-fan/hwmon/hwmon0/pwm1",
-		"LedBlue":  "/sys/class/leds/blue\\:heartbeat/brightness",
-	}, Stats: map[string]interface{}{},
+	}, Stats: map[string]interface{}{
+		"LedBlue": "/sys/class/leds/blue\\:heartbeat/brightness",
+	},
 }
 
 /***************** RUNTIME VARIABLES *******************************/
@@ -77,7 +78,7 @@ func readSystemStatus() SystemStatus {
 	/**** READ TEMPS ****/
 	s.Therm = map[string]interface{}{}
 	for key, value := range Sensors.Therm {
-		s.Therm[key] = byte(readFile(value.(string))/1000 + 55)
+		s.Therm[key] = byte(readFile(value.(string)) / 1000)
 	}
 	/**** READ FREQS ****/
 	s.Freq = map[string]interface{}{}
