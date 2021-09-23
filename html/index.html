@@ -77,8 +77,7 @@
                 traces[traces.length] = trace = defaultTrace()
                 trace.name = key
                 trace.legendgroup = category
-                trace.x = [data["Time"]]
-                trace.y = [data[category][key]]
+
 
                 if (category == "Thermal") {
                     trace.yaxis = 'y1';
