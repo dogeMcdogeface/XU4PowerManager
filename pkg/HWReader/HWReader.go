@@ -77,7 +77,11 @@ func readSystemStatus() SystemStatus {
 	/**** READ FREQS ****/
 	s.Freq = map[string]interface{}{}
 	for key, value := range Sensors.Freq {
-		s.Freq[key] = readFile(value.(string))
+		var val = readFile(value.(string))
+		if strings.Contains(key, "Gpu") {
+			val /= 1000000
+		}
+		s.Freq[key] = val
 	}
 	/**** READ FANS *****/
 	s.Fans = map[string]interface{}{}

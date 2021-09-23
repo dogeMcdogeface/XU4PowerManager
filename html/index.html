@@ -179,7 +179,7 @@
     /********************* UPDATE GRAPH ************************************************/
     function updateGraph(data) {
         if (!graphExists) return setupGraph(data)
-        console.log("updating graph", data)
+        //console.log("updating graph", data)
 
         if (autoScroll) {
             var time1 = new Date(data.Time)
@@ -212,8 +212,8 @@
                 indices[i] = i++
             }
         }
-        console.log("newY", newY)
-        console.log("newX", newX)
+        //console.log("newY", newY)
+        //console.log("newX", newX)
 
         Plotly.extendTraces('myDiv', {
             y: newY,    //[[data.Thermal0 / 1000], [data.Freq0]],
