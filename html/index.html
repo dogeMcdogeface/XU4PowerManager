@@ -205,8 +205,10 @@
         for (var category in data) {
             if (category == "Time") continue;
             for (var key in data[category]) {
-                newY[i] = [parseInput(category, key, data)]
-                newX[i] = [parseInput("Time", 0, data)]
+                //newY[i] = [parseInput(category, key, data)]
+                //newX[i] = [parseInput("Time", 0, data)]
+                newY[i] = [data[category][key]]
+                newX[i] = [new Date(data.Time)]
                 indices[i] = i++
             }
         }
@@ -224,7 +226,7 @@
     function parseInput(category, key, data) {
         value = data[category][key]
         if (category == "Time")
-            return new Date(data.Time)
+            return
         if (category == "Thermal")
             return value / 1000
         else if (category == "Freq")
