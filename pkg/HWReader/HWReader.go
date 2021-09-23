@@ -26,15 +26,9 @@ var Sensors = SystemStatus{
 		"Thermal3":   "/sys/devices/virtual/thermal/thermal_zone3/temp",
 		"ThermalGpu": "/sys/devices/virtual/thermal/thermal_zone4/temp",
 	}, Freq: map[string]interface{}{
-		"Freq0":   "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq",
-		"Freq1":   "/sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq",
-		"Freq2":   "/sys/devices/system/cpu/cpu2/cpufreq/scaling_cur_freq",
-		"Freq3":   "/sys/devices/system/cpu/cpu3/cpufreq/scaling_cur_freq",
-		"Freq4":   "/sys/devices/system/cpu/cpu4/cpufreq/scaling_cur_freq",
-		"Freq5":   "/sys/devices/system/cpu/cpu5/cpufreq/scaling_cur_freq",
-		"Freq6":   "/sys/devices/system/cpu/cpu6/cpufreq/scaling_cur_freq",
-		"Freq7":   "/sys/devices/system/cpu/cpu7/cpufreq/scaling_cur_freq",
-		"FreqGpu": "/sys/devices/platform/soc/11800000.gpu/devfreq/11800000.gpu/cur_freq",
+		"Freq A15": "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq",
+		"Freq A7":  "/sys/devices/system/cpu/cpu4/cpufreq/scaling_cur_freq",
+		"FreqGpu":  "/sys/devices/platform/soc/11800000.gpu/devfreq/11800000.gpu/cur_freq",
 	}, Fans: map[string]interface{}{
 		"FanSpeed": "/sys/devices/platform/pwm-fan/hwmon/hwmon0/pwm1",
 	}, Stats: map[string]interface{}{
