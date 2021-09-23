@@ -23,7 +23,7 @@
 <script>
 
     /************** CONFIGURATION ********************/
-    var updateTime = 100
+    var updateTime = 10
 
     var graph_color = "#232323";
     var bg_color = "#383838";
@@ -122,7 +122,7 @@
             },
             /*********** SUBPLOT 2 ***************/
             yaxis2: {
-                title: {text: 'Stats'},
+                title: {text: 'Core Frequencies'},
                 type: 'number',
                 ticksuffix: "Ghz",
                 gridcolor: grid_color,
@@ -131,7 +131,7 @@
             },
             /*********** SUBPLOT 3 ***************/
             yaxis3: {
-                title: {text: 'GPU Frequency'},
+                title: {text: 'Stats'},
                 type: 'number',
                 ticksuffix: "Mhz",
                 gridcolor: grid_color,
@@ -227,12 +227,12 @@
         value = data[category][key]
         if (category == "Time")
             return new Date(data.Time)
-        if (category == "Thermal")
-            return value / 1000
+        if (category == "Therm")
+            return value
         else if (category == "Freq")
             return value / 1000000.0
         else if (category == "Fans")
-            return value / 255.0 * 100.0
+            return value
         else if (category == "Stats")
             return value
         else
