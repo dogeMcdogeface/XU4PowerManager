@@ -12,7 +12,7 @@ import (
 
 /***************** CONFIGURATION VARIABLES *************************/
 var UpdateTime = 500 * time.Millisecond
-var LogTime = 5 * time.Second
+var LogTime = 5 * time.Minute
 var cacheLifetime = 10 * time.Millisecond
 
 var logPath = "log.csv"
