@@ -71,7 +71,7 @@ func readSystemStatus() SystemStatus {
 	/**** READ TEMPS ****/
 	s.Therm = map[string]interface{}{}
 	for key, value := range Sensors.Therm {
-		s.Therm[key] = byte(readFile(value.(string))/1000) + 55
+		s.Therm[key] = byte(readFile(value.(string)) / 1000)
 	}
 	/**** READ FREQS ****/
 	s.Freq = map[string]interface{}{}
