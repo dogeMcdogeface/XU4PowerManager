@@ -1,7 +1,6 @@
 package HWReader
 
 import (
-	"encoding/binary"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -13,7 +12,7 @@ import (
 
 /***************** CONFIGURATION VARIABLES *************************/
 var UpdateTime = 500 * time.Millisecond
-var LogTime = 1 * time.Second
+var LogTime = 5 * time.Second
 var cacheLifetime = 10 * time.Millisecond
 
 var logPath = "log.csv"
@@ -118,33 +117,6 @@ func manageLogging(s SystemStatus) {
 	}
 }
 
-func readLogFile() (list []SystemAverage) {
-	list = []SystemAverage{}
-
-	f, err := os.Open(logPath)
-	if err != nil {
-		fmt.Println(err)
-		return list
-	}
-	defer f.Close()
-
-	for true {
-		dateByte := make([]byte, 10)
-		_, err := f.Read(dateByte)
-		if err != nil {
-			break
-		}
-		date := int64(binary.LittleEndian.Uint64(dateByte[0:8]))
-		temp := int(binary.LittleEndian.Uint16(dateByte[8:10]))
-		//fmt.Println(dateByte, dateByte[0:8], dateByte[8:10], date, temp)
-		list = append(list, SystemAverage{
-			Time:  time.Unix(date, 0),
-			Therm: average{Value: temp},
-		})
-	}
-	return list
-}
-
 /***************** GETTERS *****************************************/
 func GetSystemStatus() SystemStatus {
 	lock.Lock()
@@ -156,7 +128,16 @@ func GetSystemStatus() SystemStatus {
 	return readSystemStatus()
 }
 
-func GetHistory() []map[string]interface{} {
-	return nil
-
+func GetLog() (bytes []byte) {
+	b, _ := ioutil.ReadFile(logPath) // b has type []byte
+	return b
+}
+func GetHistory() (list []SystemAverage) {
+	f, err := os.Open(logPath)
+	if err != nil {
+		fmt.Println(err)
+		return list
+	}
+	defer f.Close()
+	return SystemAverage{}.Parse(f)
 }

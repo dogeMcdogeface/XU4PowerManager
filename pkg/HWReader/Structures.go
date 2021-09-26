@@ -20,6 +20,25 @@ type SystemAverage struct {
 	Therm average
 }
 
+func (a SystemAverage) Parse(f *os.File) []SystemAverage {
+	var list = []SystemAverage{}
+	for true {
+		dateByte := make([]byte, 10)
+		_, err := f.Read(dateByte)
+		if err != nil {
+			break
+		}
+		date := int64(binary.LittleEndian.Uint64(dateByte[0:8]))
+		temp := int(binary.LittleEndian.Uint16(dateByte[8:10]))
+		//fmt.Println(dateByte, dateByte[0:8], dateByte[8:10], date, temp)
+		list = append(list, SystemAverage{
+			Time:  time.Unix(date, 0),
+			Therm: average{Value: temp},
+		})
+	}
+	return list
+}
+
 func (a *SystemAverage) Compress() []byte {
 	var temp = averageSystemStatus.Therm.Value
 	var time = averageSystemStatus.Time.Unix()
@@ -28,7 +47,7 @@ func (a *SystemAverage) Compress() []byte {
 	data = append(data, intxToByte(time, 8)...)
 	data = append(data, intxToByte(temp, 2)...)
 
-	//fmt.Println(averageSystemStatus.Time.Unix(), averageSystemStatus.Therm.Value, data)
+	fmt.Println(averageSystemStatus.Time.Unix(), averageSystemStatus.Therm.Value, data)
 	return data
 }
 

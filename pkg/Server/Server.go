@@ -1,42 +1,48 @@
 package Server
 
 import (
-	"XU4PowerManager/pkg/HWReader"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
+
+	"XU4PowerManager/pkg/HWReader"
 )
 
 var Status = "off"
 
-/*var pages = map[string]int{
-	"rsc": 3711,
-	"r":   2138,
-	"gri": 1908,
-}*/
-
-func handlerDefault(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, Page, 12)
+func handleDefault(w http.ResponseWriter, r *http.Request) {
+	//http.ServeFile(w, r, "./html/live.html")	//Serve a file
+	//fmt.Fprintf(w, "Page, 12")				//Serve a string
+	http.Redirect(w, r, "/live", 303) //Redirect
+}
+func serveHistory(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "./html/history.html")
 }
 
-func handlerLast(w http.ResponseWriter, r *http.Request) {
-	//jsonString, _ := json.Marshal(HWReader.GetLast())
-	//fmt.Fprintf(w, string(jsonString))
+func serveLive(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "./html/live.html")
+}
 
+func serveLast(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(HWReader.GetSystemStatus())
-
 }
-
-func handlerHistory(w http.ResponseWriter, r *http.Request) {
+func serveLog(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(HWReader.GetHistory())
 }
+func serveLog2(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain")
+	w.Write(HWReader.GetLog())
+}
 
 func Start() {
-	http.Handle("/", http.FileServer(http.Dir("./html")))
-	http.HandleFunc("/last", handlerLast)
-	http.HandleFunc("/history", handlerHistory)
+	//http.Handle("/", http.FileServer(http.Dir("./html")))
+	http.HandleFunc("/", handleDefault)
+	http.HandleFunc("/live", serveLive)
+	http.HandleFunc("/history", serveHistory)
+	http.HandleFunc("/last", serveLast)
+	http.HandleFunc("/log", serveLog)
+	http.HandleFunc("/log2", serveLog2)
 	log.Fatal(http.ListenAndServe(":9012", nil))
 }

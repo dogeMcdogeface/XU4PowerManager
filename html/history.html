@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+History
+
+<script>
+
+    console.log("hello")
+
+    var requestLast = new XMLHttpRequest();
+    requestLast.responseType = 'text';
+    requestLast.onload = function () {
+        setupGraph(requestLast.response);
+    }
+    requestLast.open('GET', window.location.origin + "/log2");
+    requestLast.send()
+
+
+    function setupGraph(data) {
+        console.log("setup graph", data)
+
+
+        for (var i = 0; i < data.length; i += 10) {
+            var b_date = data.slice(i, i + 8)
+            var b_temp = data.slice(i + 8, i + 10)
+
+
+
+            console.log(b_date, b_temp, byteArrayToLong(b_date),byteArrayToLong(b_temp))
+        }
+    }
+
+
+    function byteArrayToLong (byteArray) {
+        var value = 0;
+        for ( var i = byteArray.length - 1; i >= 0; i--) {
+            value = (value * 256) + byteArray.charCodeAt(i);
+        }
+        return value;
+    };
+</script>
+
+</body>
+</html>

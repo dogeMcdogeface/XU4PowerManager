@@ -59,7 +59,7 @@
         updateGraph(requestLast.response);
     }
     setInterval(function () {
-        requestLast.open('GET', window.location.href + "last");
+        requestLast.open('GET', window.location.origin + "/last");
         requestLast.send()
     }, updateTime);
 
@@ -77,8 +77,6 @@
                 traces[traces.length] = trace = defaultTrace()
                 trace.name = key
                 trace.legendgroup = category
-                /*trace.y = [data[category][key]]
-                trace.x = [data["Time"]]*/
                 trace.y = [parseInput(category, key, data)]
                 trace.x = [parseInput("Time", 0, data)]
 
