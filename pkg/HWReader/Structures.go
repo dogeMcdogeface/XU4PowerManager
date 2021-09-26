@@ -47,7 +47,7 @@ func (a *SystemAverage) Compress() []byte {
 	data = append(data, intxToByte(date, 8)...)
 	data = append(data, intxToByte(temp, 2)...)
 
-	fmt.Println(date, time.Unix(date, 0), averageSystemStatus.Therm.Value, data)
+	//fmt.Println(date, time.Unix(date, 0), averageSystemStatus.Therm.Value, data)
 	return data
 }
 
