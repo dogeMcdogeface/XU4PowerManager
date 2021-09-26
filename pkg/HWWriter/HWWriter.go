@@ -8,10 +8,7 @@ import (
 
 func Echo(path, txt string) {
 
-	//cmd := exec.Command("echo ass > t.txt")
-	//err := cmd.Run()
-
-	call("echo ass > t.txt")
+	call("echo none > /sys/class/leds/blue\\:heartbeat/trigger")
 
 }
 
