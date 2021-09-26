@@ -3,6 +3,7 @@ package main
 import (
 	"XU4PowerManager/internal"
 	"XU4PowerManager/pkg/HWReader"
+	"XU4PowerManager/pkg/HWWriter"
 	"XU4PowerManager/pkg/Server"
 	"fmt"
 	_ "github.com/spf13/viper"
@@ -16,6 +17,7 @@ import (
 
 func main() {
 	fmt.Println("Starting XU4 Power Manager ver." + internal.Ver)
+	HWWriter.Echo("/sys/class/leds/blue\\:heartbeat/trigger", "none")
 
 	go Server.Start()
 	HWReader.Start()

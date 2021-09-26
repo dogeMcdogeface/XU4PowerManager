@@ -8,8 +8,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-
-	"XU4PowerManager/pkg/HWWriter"
 )
 
 /***************** CONFIGURATION VARIABLES *************************/
@@ -50,8 +48,6 @@ var lock sync.Mutex
 /***************** MAIN METHOD *************************************/
 func Start() {
 	enabled = true
-
-	HWWriter.Echo("/sys/class/leds/blue\\:heartbeat/trigger", "none")
 
 	for enabled == true {
 		var s = GetSystemStatus() //poll hardware

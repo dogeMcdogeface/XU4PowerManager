@@ -1,25 +1,26 @@
 package HWWriter
 
 import (
+	"bytes"
 	"fmt"
 	"log"
-	"os"
+	"os/exec"
+	"strings"
 )
 
 func Echo(path, txt string) {
-	f, err := os.Create(path)
+	cmd := exec.Command("tr", "a-z", "A-Z")
+
+	cmd.Stdin = strings.NewReader("and old falcon")
+
+	var out bytes.Buffer
+	cmd.Stdout = &out
+
+	err := cmd.Run()
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	defer f.Close()
-
-	_, err2 := f.WriteString(txt)
-
-	if err2 != nil {
-		log.Fatal(err2)
-	}
-
-	fmt.Println("done")
+	fmt.Printf("translated phrase: %q\n", out.String())
 }
