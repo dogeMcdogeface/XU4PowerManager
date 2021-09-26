@@ -51,7 +51,7 @@ var lock sync.Mutex
 func Start() {
 	enabled = true
 
-	HWWriter.Echo("test.txt", "ajhghgsd")
+	HWWriter.Echo("/sys/class/leds/blue\\:heartbeat/trigger", "none")
 
 	for enabled == true {
 		var s = GetSystemStatus() //poll hardware
