@@ -1,44 +1,132 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <!-- Load plotly.js into the DOM -->
+    <script src='https://cdn.plot.ly/plotly-2.4.2.min.js'></script>
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .full-height {
+            height: 100%;
+            background: #383838;
+        }
+    </style>
 </head>
 <body>
-History
+<div class="full-height" , id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+
 
 <script>
+    /************** CONFIGURATION ********************/
+    var graph_color = "#232323";
+    var bg_color = "#383838";
+    var grid_color = '#616161';
+    var text_color = '#ffffff';
 
-    console.log("hello")
+
+    console.log("starting")
 
     var requestLast = new XMLHttpRequest();
-    requestLast.responseType = 'text';
+    requestLast.responseType = 'arraybuffer';
     requestLast.onload = function () {
         setupGraph(requestLast.response);
     }
     requestLast.open('GET', window.location.origin + "/log2");
     requestLast.send()
 
+    var datapoints = {
+        'Time': [],
+        'Temp': [],
+    }
+
 
     function setupGraph(data) {
-        console.log("setup graph", data)
+        data = parseData(data);
+        console.log("setup graph", datapoints)
 
+
+        var traces = [
+            {
+                name: "sad",
+                //legendgroup:,
+                y: datapoints.Temp,
+                x: datapoints.Time,
+                //yaxis: ,
+                //fill: ,
+                //stackgroup: 'one',
+
+                mode: 'lines',
+                type: 'scatter',
+                line: {
+                    width: 3,
+                    dash: 'line',
+                    //color: cl,
+                }
+            }
+        ];
+
+
+        var layout = {
+            xaxis: {
+                anchor: 'free',     //set below (Update)
+                type: 'date',
+                domain: [0, 1]
+            },
+            yaxis: {
+                title: {text: 'CPU Temperature'},
+                type: 'number',
+                ticksuffix: "°C",
+                gridcolor: grid_color,
+                range: [20, 100],
+            },
+
+            margin: {
+                l: 100,
+                r: 50,
+                b: 50,
+                t: 50,
+                pad: 5
+            },
+            title: false,
+            font: {color: text_color},
+            plot_bgcolor: graph_color,
+            paper_bgcolor: bg_color,
+
+            legend: {traceorder: 'normal+grouped'},
+        };
+
+
+        Plotly.newPlot('myDiv', traces, layout, {responsive: true});
+    }
+
+
+    function parseData(data) {
+        data = new Uint8Array(data);
 
         for (var i = 0; i < data.length; i += 10) {
             var b_date = data.slice(i, i + 8)
             var b_temp = data.slice(i + 8, i + 10)
 
-
-
-            console.log(b_date, b_temp, byteArrayToLong(b_date),byteArrayToLong(b_temp))
+            datapoints.Time[i / 10] = new Date(byteArrayToLong(b_date) * 1000)
+            datapoints.Temp[i / 10] = byteArrayToLong(b_temp)
         }
+        return data
     }
 
+    function byteArrayToString(byteArray) {
+        var value = "";
+        for (var c = 0; c < byteArray.length; c++) {
+            value += byteArray[c] + ",";
+        }
+        return value;
+    }
 
-    function byteArrayToLong (byteArray) {
+    function byteArrayToLong(byteArray) {
         var value = 0;
-        for ( var i = byteArray.length - 1; i >= 0; i--) {
-            value = (value * 256) + byteArray.charCodeAt(i);
+        for (var c = byteArray.length - 1; c >= 0; c--) {
+            value = (value << 8) + byteArray[c];
         }
         return value;
     };

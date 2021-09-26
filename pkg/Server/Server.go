@@ -32,7 +32,7 @@ func serveLog(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(HWReader.GetHistory())
 }
 func serveLog2(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/plain")
+	w.Header().Set("Content-Type", "application/octet-stream")
 	w.Write(HWReader.GetLog())
 }
 

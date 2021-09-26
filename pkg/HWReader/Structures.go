@@ -41,13 +41,13 @@ func (a SystemAverage) Parse(f *os.File) []SystemAverage {
 
 func (a *SystemAverage) Compress() []byte {
 	var temp = averageSystemStatus.Therm.Value
-	var time = averageSystemStatus.Time.Unix()
+	var date = averageSystemStatus.Time.Unix()
 
 	var data []byte
-	data = append(data, intxToByte(time, 8)...)
+	data = append(data, intxToByte(date, 8)...)
 	data = append(data, intxToByte(temp, 2)...)
 
-	fmt.Println(averageSystemStatus.Time.Unix(), averageSystemStatus.Therm.Value, data)
+	fmt.Println(date, time.Unix(date, 0), averageSystemStatus.Therm.Value, data)
 	return data
 }
 
