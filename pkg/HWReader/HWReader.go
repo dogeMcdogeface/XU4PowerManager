@@ -8,6 +8,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"XU4PowerManager/pkg/HWWriter"
 )
 
 /***************** CONFIGURATION VARIABLES *************************/
@@ -48,6 +50,8 @@ var lock sync.Mutex
 /***************** MAIN METHOD *************************************/
 func Start() {
 	enabled = true
+
+	HWWriter.Echo("test.txt", "ajhghgsd")
 
 	for enabled == true {
 		var s = GetSystemStatus() //poll hardware
