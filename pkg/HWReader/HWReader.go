@@ -48,14 +48,13 @@ var lock sync.Mutex
 /***************** MAIN METHOD *************************************/
 func Start() {
 	enabled = true
+	fmt.Println("HW Reader: Running")
 
 	for enabled == true {
 		var s = GetSystemStatus() //poll hardware
-
-		manageLogging(s) //calculate and log averages
+		manageLogging(s)          //calculate and log averages
 		//manageHardware(s)
 
-		//fmt.Println(s)
 		time.Sleep(UpdateTime)
 	}
 }

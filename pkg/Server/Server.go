@@ -1,12 +1,19 @@
 package Server
 
 import (
+	"embed"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
 	"XU4PowerManager/pkg/HWReader"
 )
+
+// content holds our static web server content.
+//go:embed image/* template/*
+//go:embed html/index.html
+var content embed.FS
 
 var Status = "off"
 
@@ -37,6 +44,7 @@ func serveLog2(w http.ResponseWriter, r *http.Request) {
 }
 
 func Start() {
+	Status = "on"
 	//http.Handle("/", http.FileServer(http.Dir("./html")))
 	http.HandleFunc("/", handleDefault)
 	http.HandleFunc("/live", serveLive)
@@ -45,4 +53,5 @@ func Start() {
 	http.HandleFunc("/log", serveLog)
 	http.HandleFunc("/log2", serveLog2)
 	log.Fatal(http.ListenAndServe(":9012", nil))
+	fmt.Println("Server: " + Status)
 }
