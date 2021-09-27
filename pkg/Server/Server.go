@@ -11,8 +11,7 @@ import (
 )
 
 // content holds our static web server content.
-//go:embed image/* template/*
-//go:embed html/index.html
+//go:embed ./html/*
 var content embed.FS
 
 var Status = "off"
