@@ -11,10 +11,8 @@ import (
 )
 
 // content holds our static web server content.
-//go:embed image/* template/*
-//go:embed ./html/live.html
+//go:embed html/live.html
 var content embed.FS
-
 var Status = "off"
 
 func handleDefault(w http.ResponseWriter, r *http.Request) {
@@ -23,11 +21,15 @@ func handleDefault(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/live", 303) //Redirect
 }
 func serveHistory(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "./html/history.html")
+	//http.ServeFile(w, r, "./html/history.html")
+	b, _ := content.ReadFile("html/history.html")
+	w.Write(b)
 }
 
 func serveLive(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "./html/live.html")
+	//http.ServeFile(w, r, "./html/live.html")
+	b, _ := content.ReadFile("html/live.html")
+	w.Write(b)
 }
 
 func serveLast(w http.ResponseWriter, r *http.Request) {

@@ -9,12 +9,6 @@ import (
 	"XU4PowerManager/pkg/Server"
 )
 
-/*func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}*/
-
 func main() {
 	fmt.Println("Starting XU4 Power Manager ver." + internal.Ver)
 	//HWWriter.Echo("/sys/class/leds/blue\\:heartbeat/trigger", "none")
